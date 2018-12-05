@@ -1,0 +1,27 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://straight_better.gd" type="Script" id=1]
+[ext_resource path="res://road_tex.png" type="Texture" id=2]
+
+[node name="Node2D" type="Node2D" index="0"]
+
+script = ExtResource( 1 )
+width = 10
+
+[node name="Polygon2D" type="Polygon2D" parent="." index="0"]
+
+polygon = PoolVector2Array( 0, -10, 50, -10, 50, 10, 0, 10 )
+uv = PoolVector2Array( 0, -10, 50, -10, 50, 10, 0, 10 )
+color = Color( 1, 1, 1, 1 )
+vertex_colors = PoolColorArray(  )
+offset = Vector2( 0, 0 )
+antialiased = false
+texture = ExtResource( 2 )
+texture_offset = Vector2( 20, 0 )
+texture_scale = Vector2( 2, 2 )
+texture_rotation_degrees = 90.0
+invert_enable = false
+invert_border = 100.0
+_sections_unfolded = [ "Texture" ]
+
+
