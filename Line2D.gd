@@ -17,6 +17,8 @@ var angles = []
 var AS
 var arc_points = []
 
+var vector_factor = 5 *15 # 15 px = 1 m
+
 func _ready():
 	# Called every time the node is added to the scene.
 	# Initialization here
@@ -55,7 +57,7 @@ func get_corner_points():
 			# we have one less previous point than points
 			var vector = points[i]-prev_points[i-1]
 			# how big the corner is
-			vector = vector.normalized()*5 *15 # 15 px - 1 m # 5 units away
+			vector = vector.normalized()*vector_factor
 			
 			vectors.append(vector)
 			
@@ -70,7 +72,7 @@ func get_corner_points():
 			var vector = points[i]-next_points[i]
 			#var vector = next_points[i]-points[i]
 			# how big the corner is
-			vector = vector.normalized()*5*15
+			vector = vector.normalized()*vector_factor
 			vectors.append(vector)
 			
 			var corner_point = points[i]-vector
@@ -91,7 +93,7 @@ func get_tangent(i,j):
 #	# B-A = a->b
 
 	#to the right with positive factor
-	var tang_factor = -30*15 # 15 px = 1 m
+	var tang_factor = -50*15 # 15 px = 1 m
 	
 	
 	if j == 0:

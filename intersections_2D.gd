@@ -49,6 +49,10 @@ func setup_line_2d():
 	var help = helper_line.instance()
 	
 	help.points = [loc_src_exit, loc_src_extended, loc_dest_extended, loc_dest_exit]
+	
+	# radius
+	help.vector_factor = 8*15 # 15 px = 1 m
+	
 	# looks
 	help.width = 10
 	help.set_default_color(Color(0.4, 0.5, 1, 0.2))
