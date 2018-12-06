@@ -2,7 +2,7 @@ tool
 extends "curve.gd"
 
 # class member variables go here, for example:
-export(int) var width = 40
+export(int) var width = 70
 var inner_arc = []
 var outer_arc = []
 

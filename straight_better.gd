@@ -2,7 +2,7 @@ tool
 extends "straight2D.gd"
 
 # class member variables go here, for example:
-export(int) var width = 10
+export(int) var width = 70
 var inner_first = Vector2(0,0)
 var inner_last = Vector2(0,0)
 var outer_first = Vector2(0,0)

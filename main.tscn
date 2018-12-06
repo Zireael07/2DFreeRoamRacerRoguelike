@@ -14,8 +14,6 @@ _sections_unfolded = [ "Transform" ]
 
 [node name="Node2D" parent="map" index="0" instance=ExtResource( 1 )]
 
-width = 70
-
 [node name="Node2D2" parent="map" index="1" instance=ExtResource( 2 )]
 
 position = Vector2( 750, 225 )
@@ -26,7 +24,6 @@ _sections_unfolded = [ "Transform" ]
 position = Vector2( 975, 225 )
 rotation = 1.5708
 _sections_unfolded = [ "Transform" ]
-width = 70
 
 [node name="player" parent="." index="1" instance=ExtResource( 3 )]
 
