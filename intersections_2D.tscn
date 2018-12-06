@@ -1,0 +1,30 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://intersections2D.gd" type="Script" id=1]
+[ext_resource path="res://intersection2D.tscn" type="PackedScene" id=2]
+
+[node name="Node2D" type="Node2D" index="0"]
+
+script = ExtResource( 1 )
+
+[node name="Node2D" parent="." index="0" instance=ExtResource( 2 )]
+
+position = Vector2( 2000, 1312.5 )
+_sections_unfolded = [ "Transform" ]
+
+[node name="Node2D4" parent="." index="1" instance=ExtResource( 2 )]
+
+position = Vector2( -76.75, 82.5 )
+_sections_unfolded = [ "Transform" ]
+
+[node name="Node2D3" parent="." index="2" instance=ExtResource( 2 )]
+
+position = Vector2( 3096, 2050 )
+_sections_unfolded = [ "Transform" ]
+
+[node name="Node2D2" parent="." index="3" instance=ExtResource( 2 )]
+
+position = Vector2( 2212.5, 3757.5 )
+_sections_unfolded = [ "Transform" ]
+
+
