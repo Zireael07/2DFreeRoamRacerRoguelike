@@ -11,14 +11,8 @@ var loc_dest_exit = Vector2(0,0)
 var loc_src_extended = Vector2(0,0)
 var loc_dest_extended = Vector2(0,0)
 
-var helper_line
-
 func _ready():
-	helper_line = load("res://Line2D.tscn")
-
-	connect_intersections(1,0)
-	connect_intersections(0,2)
-	connect_intersections(1,2)
+	pass
 	
 
 func connect_intersections(one, two):
@@ -29,8 +23,6 @@ func connect_intersections(one, two):
 	loc_dest_exit = to_local(get_child(two).to_global(dest_exit))
 	
 	extend_lines(one,two)
-	
-	setup_line_2d()
 	
 
 func extend_lines(one,two):
@@ -43,23 +35,6 @@ func extend_lines(one,two):
 	var dest_line = loc_dest_exit-get_child(two).get_position()
 	
 	loc_dest_extended = dest_line*extend + get_child(two).get_position()
-
-func setup_line_2d():
-	var help = helper_line.instance()
-	
-	help.points = [loc_src_exit, loc_src_extended, loc_dest_extended, loc_dest_exit]
-	
-	# radius for calculated turns
-	var extend_len = Vector2(loc_src_extended-loc_src_exit).length()
-	help.vector_factor = ((extend_len/30)-3)*30
-	#help.vector_factor = 8*15 # 15 px = 1 m
-	
-	# looks
-	help.width = 10
-	help.set_default_color(Color(0.4, 0.5, 1, 0.2))
-	
-	add_child(help)
-
 
 
 func _draw():
