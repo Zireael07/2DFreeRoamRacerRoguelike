@@ -36,9 +36,8 @@ func connect_intersections(one, two):
 func extend_lines(one,two):
 	#B-A: A->B
 	var src_line = loc_src_exit-get_child(one).get_position()
-	var extend = 2
+	var extend = 3
 	# note: src_line*extend > helper line's vector must be true, otherwise the turns won't work
-	# TODO: can we enforce this somehow
 	loc_src_extended = src_line*extend + get_child(one).get_position()
 	
 	var dest_line = loc_dest_exit-get_child(two).get_position()
@@ -50,8 +49,10 @@ func setup_line_2d():
 	
 	help.points = [loc_src_exit, loc_src_extended, loc_dest_extended, loc_dest_exit]
 	
-	# radius
-	help.vector_factor = 8*15 # 15 px = 1 m
+	# radius for calculated turns
+	var extend_len = Vector2(loc_src_extended-loc_src_exit).length()
+	help.vector_factor = ((extend_len/30)-3)*30
+	#help.vector_factor = 8*15 # 15 px = 1 m
 	
 	# looks
 	help.width = 10
