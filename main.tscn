@@ -16,7 +16,7 @@ _sections_unfolded = [ "Transform" ]
 
 [node name="Node2D2" parent="map" index="1" instance=ExtResource( 2 )]
 
-position = Vector2( 750, 225 )
+position = Vector2( 750, 0 )
 _sections_unfolded = [ "Transform" ]
 
 [node name="Node2D3" parent="map" index="2" instance=ExtResource( 1 )]
