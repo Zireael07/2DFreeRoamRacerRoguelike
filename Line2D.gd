@@ -54,7 +54,8 @@ func get_corner_points():
 			# B-A = A-> B
 			# we have one less previous point than points
 			var vector = points[i]-prev_points[i-1]
-			vector = vector.normalized()*5 # 5 units away
+			# how big the corner is
+			vector = vector.normalized()*5 *15 # 15 px - 1 m # 5 units away
 			
 			vectors.append(vector)
 			
@@ -68,7 +69,8 @@ func get_corner_points():
 			# B-A = A-> B
 			var vector = points[i]-next_points[i]
 			#var vector = next_points[i]-points[i]
-			vector = vector.normalized()*5
+			# how big the corner is
+			vector = vector.normalized()*5*15
 			vectors.append(vector)
 			
 			var corner_point = points[i]-vector
@@ -89,7 +91,7 @@ func get_tangent(i,j):
 #	# B-A = a->b
 
 	#to the right with positive factor
-	var tang_factor = -30
+	var tang_factor = -30*15 # 15 px = 1 m
 	
 	
 	if j == 0:
@@ -260,6 +262,8 @@ func _draw():
 	#draw_line(points[1], vectors[0], Color(0,1,0))
 	
 	draw_tangents()
+	
+	#draw_vectors()
 	
 	if intersections.size() > 0:
 		# draw intersection if any

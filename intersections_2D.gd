@@ -36,7 +36,9 @@ func connect_intersections(one, two):
 func extend_lines(one,two):
 	#B-A: A->B
 	var src_line = loc_src_exit-get_child(one).get_position()
-	var extend = 2 #*15 # 15 px = 1 m
+	var extend = 2
+	# note: src_line*extend > helper line's vector must be true, otherwise the turns won't work
+	# TODO: can we enforce this somehow
 	loc_src_extended = src_line*extend + get_child(one).get_position()
 	
 	var dest_line = loc_dest_exit-get_child(two).get_position()
