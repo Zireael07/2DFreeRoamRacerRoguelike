@@ -29,8 +29,10 @@ func _ready():
 	#pass
 
 func _draw():
-	draw_line(inner_first, inner_last, Color(0,0,0), thick)
-	draw_line(outer_first, outer_last, Color(0,0,0), thick)
+	#draw_line(inner_first, inner_last, Color(0,0,0), thick)
+	#draw_line(outer_first, outer_last, Color(0,0,0), thick)
+	
+	pass
 
 #func _process(delta):
 #	# Called every frame. Delta is time since last frame.
