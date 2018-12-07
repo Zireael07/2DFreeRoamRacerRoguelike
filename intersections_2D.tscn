@@ -19,7 +19,7 @@ _sections_unfolded = [ "Transform" ]
 
 [node name="Node2D3" parent="." index="2" instance=ExtResource( 2 )]
 
-position = Vector2( 3096, 2050 )
+position = Vector2( 3206, 2500 )
 _sections_unfolded = [ "Transform" ]
 
 [node name="Node2D2" parent="." index="3" instance=ExtResource( 2 )]

@@ -22,7 +22,7 @@ func connect_intersections(one, two):
 	# call the extended script
 	.connect_intersections(one, two)
 
-	var corner_points = get_corner_points(one, two, loc_src_extended, loc_dest_extended, 30*5)
+	var corner_points = get_corner_points(one, two, loc_src_extended, loc_dest_extended, loc_src_extended.distance_to(loc_src_exit))
 	
 	var intersect = get_intersection(corner_points[0], corner_points[1], loc_src_extended)
 	if intersect:
