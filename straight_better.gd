@@ -8,6 +8,9 @@ var inner_last = Vector2(0,0)
 var outer_first = Vector2(0,0)
 var outer_last = Vector2(0,0)
 
+var building = null
+var buildDistance = 70
+var buildingSpacing = 15*8
 
 func _ready():
 	# Called when the node is added to the scene for the first time.
@@ -25,8 +28,27 @@ func _ready():
 	
 	get_child(0).set_polygon(poly)
 	
+	# props
+	building = load("res://building2D.tscn")
+	
+	var numBuildings = int(length/buildingSpacing)
+	for index in range(numBuildings):
+		placeBuilding(index)
+	
 	
 	#pass
+
+func placeBuilding(index):
+	# left side
+	var build = building.instance()
+	
+	build.set_position(first + Vector2(buildingSpacing*index, -width-buildDistance))
+	add_child(build)
+	
+	# right side
+	build = building.instance()
+	build.set_position(first + Vector2(buildingSpacing*index, width+buildDistance))
+	add_child(build)
 
 func _draw():
 	#draw_line(inner_first, inner_last, Color(0,0,0), thick)
