@@ -71,20 +71,32 @@ func get_src_exit(src, dest):
 		return
 	
 	if abs(dest.get_position().x - src.get_position().x) > abs(dest.get_position().y - src.get_position().y):
-		if src_exits.has(src.point_two):
-		#if dest.get_position().x < src.get_position().x and src_exits.has("two"):
-			print("[src] " + str(src.get_name()) + " " + str(dest.get_name()) + " X rule" )
-			
-			src_exits.remove(src_exits.find(src.point_two))
-			#src_exits.remove(src_exits.find("two"))
-			
-			return src.point_two
-			
+		if dest.get_position().y > src.get_position().y:
+			if src_exits.has(src.point_two):
+				print("[src] " + src.get_name() + " " + dest.get_name() + " X rule")
+				src_exits.remove(src_exits.find(src.point_two))
+				return src.point_two
+			else:
+				if src_exits.has(src.point_three):
+					print("[src] " + src.get_name() + " " + dest.get_name() + " X rule alt")
+					src_exits.remove(src_exits.find(src.point_three))
+					return src.point_three
 		else:
-			print("[src] " + str(src.get_name()) + " " + str(dest.get_name()) + " X rule alt")
-			src_exits.remove(src_exits.find(src.point_one))
-			
-			return src.point_one
+			if src_exits.has(src.point_three):
+			#if dest.get_position().x < src.get_position().x and src_exits.has("two"):
+				print("[src] " + str(src.get_name()) + " " + str(dest.get_name()) + " X rule inv" )
+				
+				src_exits.remove(src_exits.find(src.point_three))
+				#src_exits.remove(src_exits.find("two"))
+				
+				return src.point_three
+				
+			else:
+				if src_exits.has(src.point_one):
+					print("[src] " + str(src.get_name()) + " " + str(dest.get_name()) + " X rule inv alt")
+					src_exits.remove(src_exits.find(src.point_one))
+				
+					return src.point_one
 		
 	elif dest.get_position().y > src.get_position().y and src_exits.has(src.point_one):
 		print("[src] " + str(src.get_name()) + " " + str(dest.get_name()) + " Y rule")
@@ -116,6 +128,23 @@ func get_dest_exit(src, dest): #, dest_exits):
 		return
 	
 	if abs(dest.get_position().x - src.get_position().x) > abs(dest.get_position().y - src.get_position().y):
+		if dest.get_position().y > src.get_position().y:
+			if dest_exits.has(dest.point_three):
+				print("[dest] " + src.get_name() + " " + dest.get_name() + " X rule a)")
+				dest_exits.remove(dest_exits.find(dest.point_three))
+				
+				return dest.point_three
+		else:
+			if dest_exits.has(dest.point_one):
+				print("[dest] " + src.get_name() + " " + dest.get_name() + " X rule b)")
+				dest_exits.remove(dest_exits.find(dest.point_one))
+				return dest.point_one
+			else:
+				print("[dest] " + src.get_name() + " " + dest.get_name() + " X rule b) alt")
+				dest_exits.remove(dest_exits.find(dest.point_three))
+				return dest.point_three
+		
+		
 		if dest_exits.has(dest.point_three):
 		#if dest.get_position().x < src.get_position().x and dest_exits.has("one"):
 			print("[dest] " + str(src.get_name()) + " " + str(dest.get_name()) + " X rule")
