@@ -9,14 +9,10 @@ var curve
 #var intersections = []
 
 func _ready():
-
 	straight = load("res://Road2D_straight.tscn")
 	curve = load("res://Road2DPolygon.tscn")
-
-	connect_intersections(1,0)
-	connect_intersections(0,2)
-	connect_intersections(1,2)
 	
+	#pass
 
 func connect_intersections(one, two):
 	# call the extended script
