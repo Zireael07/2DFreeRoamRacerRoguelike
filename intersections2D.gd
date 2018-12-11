@@ -18,6 +18,10 @@ func connect_intersections(one, two):
 	# call the extended script
 	.connect_intersections(one, two)
 
+	var top_node = Node2D.new()
+	top_node.set_name("Road " +str(one) + "-" + str(two))
+	add_child(top_node)
+
 	var corner_points = get_corner_points(one, two, loc_src_extended, loc_dest_extended, loc_src_extended.distance_to(loc_src_exit))
 	
 	var intersect = get_intersection(corner_points[0], corner_points[1], loc_src_extended)
@@ -25,16 +29,16 @@ func connect_intersections(one, two):
 		var data = get_arc_angle(intersect, corner_points[0], corner_points[1])
 #		print("Data: " + str(data))
 #
-		calculate_turn(one, two, data, corner_points[0])
+		calculate_turn(one, two, data, corner_points[0], 0, top_node)
 
 	intersect = get_intersection(corner_points[2], corner_points[3], loc_dest_extended)
 	if intersect:
 		var data = get_arc_angle(intersect, corner_points[2], corner_points[3])
 		
-		calculate_turn(one, two, data, corner_points[2])
+		calculate_turn(one, two, data, corner_points[2], 1, top_node)
 	
 
-		place_straight(corner_points[1], corner_points[3])
+		place_straight(corner_points[1], corner_points[3], top_node)
 
 func get_corner_points(one, two, loc_src_extended, loc_dest_extended, dist):
 	var corners = []
@@ -154,36 +158,58 @@ func get_circle_arc( center, radius, angle_from, angle_to, right ):
 	
 	return points_arc
 
-func calculate_turn(one, two, data, loc):
+func calculate_turn(one, two, data, loc, index, node):
 	var radius = data[0]
 	var start_angle = data[1] + 90
 	var end_angle = data[2] + 90
-
-	var turn = set_curved_road(radius, start_angle, end_angle)
 	
-	turn.set_position(loc)
+	print("R: " + str(data[0]) + " start " + str(start_angle) + " end: " + str(end_angle))
+	
 
-func set_curved_road(radius, start_angle, end_angle):
+	var turn = set_curved_road(radius, start_angle, end_angle, index, node)
+	
+	if turn != null:
+		turn.set_position(loc)
+
+func set_curved_road(radius, start_angle, end_angle, index, node):
+	if radius < 10: # waaaay too small
+		print("Bad radius given!")
+		return null
+	
+	
 	var curved_road = curve.instance()
+	
+	curved_road.set_name("Road_instance "+String(index))
+	
+	if start_angle > end_angle and end_angle < 0:
+		print("Bad road settings: " + str(start_angle) + ", " + str(end_angle)) 
+		start_angle = start_angle+360
+	
+	print("Road settings: start: " + str(start_angle) + " end: " + str(end_angle))
 	
 	curved_road.get_child(0).get_child(0).angle_from = start_angle
 	curved_road.get_child(0).get_child(0).angle_to = end_angle
 	curved_road.get_child(0).get_child(0).radius = radius
 	
-	add_child(curved_road)
+	node.add_child(curved_road)
+	
+	# debug
+	#curved_road.set_owner(self)
 	
 	return curved_road
 
-func place_straight(start, end):
+func place_straight(start, end, node):
 
 	var straight_road = straight.instance()
 	
 	var dist = start.distance_to(end)
 	straight_road.length = dist
-	straight_road.set_name("Road_instance 0")
+	straight_road.set_name("Road_instance straight")
 	
+	node.add_child(straight_road)
 	
-	add_child(straight_road)
+	# debug
+	#straight_road.set_owner(self)
 	
 	# place
 	straight_road.set_position(start)
