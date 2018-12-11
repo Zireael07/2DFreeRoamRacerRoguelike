@@ -19,11 +19,11 @@ func connect_intersections(one, two):
 	# catch indices out of range
 	if one > get_child_count() -1 or two > get_child_count() -1:
 		print("Wrong indices given")
-		return
+		return false
 	
 	if not "point_one" in get_child(one) or not "point_one" in get_child(two):
 		print("Targets are not intersections?")
-		return
+		return false
 	
 	var src_exit = get_src_exit(get_child(one), get_child(two))
 	loc_src_exit = to_local(get_child(one).to_global(src_exit))

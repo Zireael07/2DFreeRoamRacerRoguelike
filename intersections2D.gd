@@ -16,29 +16,33 @@ func _ready():
 
 func connect_intersections(one, two):
 	# call the extended script
-	.connect_intersections(one, two)
-
-	var top_node = Node2D.new()
-	top_node.set_name("Road " +str(one) + "-" + str(two))
-	add_child(top_node)
-
-	var corner_points = get_corner_points(one, two, loc_src_extended, loc_dest_extended, loc_src_extended.distance_to(loc_src_exit))
+	var cont = .connect_intersections(one, two)
 	
-	var intersect = get_intersection(corner_points[0], corner_points[1], loc_src_extended)
-	if intersect:
-		var data = get_arc_angle(intersect, corner_points[0], corner_points[1])
-#		print("Data: " + str(data))
-#
-		calculate_turn(one, two, data, corner_points[0], 0, top_node)
-
-	intersect = get_intersection(corner_points[2], corner_points[3], loc_dest_extended)
-	if intersect:
-		var data = get_arc_angle(intersect, corner_points[2], corner_points[3])
+	# if we can actually continue
+	if cont != false:
+		var top_node = Node2D.new()
+		top_node.set_name("Road " +str(one) + "-" + str(two))
+		add_child(top_node)
+		#debug
+		#top_node.set_owner(self)
+	
+		var corner_points = get_corner_points(one, two, loc_src_extended, loc_dest_extended, loc_src_extended.distance_to(loc_src_exit))
 		
-		calculate_turn(one, two, data, corner_points[2], 1, top_node)
+		var intersect = get_intersection(corner_points[0], corner_points[1], loc_src_extended)
+		if intersect:
+			var data = get_arc_angle(intersect, corner_points[0], corner_points[1])
+	#		print("Data: " + str(data))
+	#
+			calculate_turn(one, two, data, corner_points[0], 0, top_node)
 	
-
-		place_straight(corner_points[1], corner_points[3], top_node)
+		intersect = get_intersection(corner_points[2], corner_points[3], loc_dest_extended)
+		if intersect:
+			var data = get_arc_angle(intersect, corner_points[2], corner_points[3])
+			
+			calculate_turn(one, two, data, corner_points[2], 1, top_node)
+		
+	
+			place_straight(corner_points[1], corner_points[3], top_node)
 
 func get_corner_points(one, two, loc_src_extended, loc_dest_extended, dist):
 	var corners = []
@@ -119,6 +123,10 @@ func get_arc_angles(center_point, start_point, end_point, angle0):
 	var arc = angle1-angle2
 	print("Arc is " + str(arc))
 	
+	if arc > 200:
+		print("Too big arc" + str(angle1) + " " + str(angle2))
+		angle2 = angle2 + 360
+	
 	angles = [angle1, angle2]
 	
 	return angles
@@ -134,8 +142,8 @@ func get_arc_angle(inters, corner1, corner2):
 	
 	var angles = get_arc_angles(inters, corner1, corner2, angle0)
 
-	#var points_arc = get_circle_arc(inters, radius, angles[1], angles[1]+(angles[0]-angles[1]), true)
-	var points_arc = get_circle_arc(inters, radius, angles[0], angles[1], true)
+	var points_arc = get_circle_arc(inters, radius, angles[1], angles[1]+(angles[0]-angles[1]), true)
+	#var points_arc = get_circle_arc(inters, radius, angles[0], angles[1], true)
 	
 	var end_point = points_arc[points_arc.size()-1]
 	
@@ -172,7 +180,7 @@ func calculate_turn(one, two, data, loc, index, node):
 		turn.set_position(loc)
 
 func set_curved_road(radius, start_angle, end_angle, index, node):
-	if radius < 10: # waaaay too small
+	if radius < 70: # waaaay too small
 		print("Bad radius given!")
 		return null
 	
@@ -181,9 +189,10 @@ func set_curved_road(radius, start_angle, end_angle, index, node):
 	
 	curved_road.set_name("Road_instance "+String(index))
 	
-	if start_angle > end_angle and end_angle < 0:
-		print("Bad road settings: " + str(start_angle) + ", " + str(end_angle)) 
-		start_angle = start_angle+360
+#	if start_angle > end_angle and end_angle < 0:
+#		print("Bad road settings: " + str(start_angle) + ", " + str(end_angle)) 
+#		start_angle = start_angle-360
+#		#end_angle = end_angle-360
 	
 	print("Road settings: start: " + str(start_angle) + " end: " + str(end_angle))
 	
