@@ -29,6 +29,7 @@ var predicted_steer = 0
 var forward_vec = Vector2(0,0)
 var reverse
 var speed = 0
+var dot
 
 # Vehicle velocity
 var _velocity = Vector2(0, 0)
@@ -62,6 +63,9 @@ func do_physics(gas, braking, left, right, delta):
 	
 	# Drag (0 means we will never slow down ever. Like being in space.)
 	_velocity *= drag_coefficient
+	
+	# needed for dot calculations
+	forward_vec = Vector2(0,-100)
 	
 #	# If we can drift
 #	if(can_drift):
@@ -128,7 +132,7 @@ func do_physics(gas, braking, left, right, delta):
 		get_node("wheel").set_rotation(steer_angle)
 		get_node("wheel2").set_rotation(steer_angle)
 	
-	
+	var dot = get_linear_velocity().rotated(-get_rotation()).dot(forward_vec)
 	# Accelerate
 	if(gas):
 		if has_node("rear light"):
@@ -144,8 +148,10 @@ func do_physics(gas, braking, left, right, delta):
 
 		# fix the sliding (offset)		
 		var angle_to = _velocity.angle_to(get_up())
-		if reverse and _velocity.length() > 5:
+		if dot < 0 and _velocity.length() > 5:
 			angle_to = _velocity.angle_to(-get_up())
+		if dot < 0 and _velocity.length() < 5:
+			reverse = false
 			
 		_velocity = _velocity.rotated(angle_to)
 
@@ -163,12 +169,13 @@ func do_physics(gas, braking, left, right, delta):
 		
 		# fix the sliding (offset)
 		var angle_to = _velocity.angle_to(get_up())
+		reverse = false
 		# enable reversing
-		if reverse or _velocity.length() < 5:
+		if dot < 0 or (dot > 0 and _velocity.length() < 5):
+			reverse = true
 			angle_to = _velocity.angle_to(-get_up())
 		
 		_velocity = _velocity.rotated(angle_to)
-		
 		
 		
 	# Prevent exceeding max velocity
@@ -187,6 +194,17 @@ func do_physics(gas, braking, left, right, delta):
 	# Torque depends that the vehicle is moving
 	#var torque = lerp(0, steering_torque, _velocity.length() / top_speed)
 	
+	# prevents accumulating slide
+	# we weren't recalculating direction if keys weren't pressed
+	var dir = get_up()
+	if reverse:
+#		print("Reverse")
+		dir = -get_up()
+	
+	var angle_to = _velocity.angle_to(dir)
+	_velocity = _velocity.rotated(angle_to)
+	
+	
 	# Apply the force
 	set_linear_velocity(_velocity)
 	
@@ -196,17 +214,16 @@ func do_physics(gas, braking, left, right, delta):
 	# rotating by -get_rot() because it was rotated by get_rot @ line 103
 	motion = get_linear_velocity().clamped(300).rotated(-get_rotation()) # yellow
 	#target_motion = motion+steering
-	forward_vec = Vector2(0,-100)
 	
 	#reverse
-	var dot = get_linear_velocity().rotated(-get_rotation()).dot(forward_vec)
+#	dot = get_linear_velocity().rotated(-get_rotation()).dot(forward_vec)
 #	print(str(dot))
-	if (dot < 0):
-#		print("Reverse")
-		reverse = true
-	else:
-		reverse = false
-	
+#	if (dot < 0):
+##		print("Reverse")
+#		reverse = true
+#	else:
+#		reverse = false
+#
 	
 
 # Returns up direction (vehicle's forward direction)
