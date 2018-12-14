@@ -6,8 +6,12 @@ export(int) var width = 70
 var inner_arc = []
 var outer_arc = []
 
+var streetlight
+
 func _ready():
-	print("Curve ready")
+	streetlight = preload("res://lamplight.tscn")
+	
+	#print("Curve ready")
 	thick = 1
 	
 	# arc
@@ -44,9 +48,25 @@ func _ready():
 	#get_child(0).set_uv(uvs)
 	get_child(0).set_polygon(get_child(0).poly)
 
-	
+	placeStreetlight()
 	
 	#pass
+	
+# props
+func placeStreetlight():
+	var light = streetlight.instance()
+	light.set_name("Streetlight")
+	add_child(light)
+	
+	var num = (points_arc.size()/2)
+	var center = Vector2(0,0)
+	
+	var dist = 60
+	# B-A: A->B
+	var dir = (center-inner_arc[num])
+	var offset = dir.normalized() * dist
+	
+	light.set_position(inner_arc[num]+offset)
 
 
 func _draw():
