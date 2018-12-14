@@ -140,9 +140,13 @@ func do_physics(gas, braking, left, right, delta):
 		# those result in the velocity being offset from heading (the car accumulates a slide)
 		_velocity += get_up() * acceleration * axis
 		#_velocity += Vector2(0,-1).rotated(get_rotation()) * acceleration * axis
-		
-		# fix the sliding (offset)
+		#print(str(_velocity))
+
+		# fix the sliding (offset)		
 		var angle_to = _velocity.angle_to(get_up())
+		if reverse and _velocity.length() > 5:
+			angle_to = _velocity.angle_to(-get_up())
+			
 		_velocity = _velocity.rotated(angle_to)
 
 	# Break / Reverse
@@ -152,19 +156,18 @@ func do_physics(gas, braking, left, right, delta):
 			get_node("rear light").set_modulate(Color(1,1,1))
 		
 		var axis = 1 # Set it to 1 since we are not using the trigger
-		
+
 		# those result in the velocity being offset from heading (the car accumulates a slide)
 		_velocity -= get_up() * acceleration * axis
-		#_velocity -= Vector2(0,-1).rotated(get_rotation()) * acceleration * axis
+		#_velocity -= Vector2(0,-1).rotated(get_rotation()) * acceleration * axis		
 		
+		# fix the sliding (offset)
+		var angle_to = _velocity.angle_to(get_up())
 		# enable reversing
-		if _velocity.y > 0:
-			var angle_to = _velocity.angle_to(-get_up())
-			_velocity = _velocity.rotated(angle_to)
-		else:
-			# fix the sliding (offset)
-			var angle_to = _velocity.angle_to(get_up())
-			_velocity = _velocity.rotated(angle_to)
+		if reverse or _velocity.length() < 5:
+			angle_to = _velocity.angle_to(-get_up())
+		
+		_velocity = _velocity.rotated(angle_to)
 		
 		
 		
@@ -175,10 +178,11 @@ func do_physics(gas, braking, left, right, delta):
 	# and rotate it to the same amount our vehicle is rotated.
 	# Then we keep the magnitude of that direction which allows
 	# us to calculate the max allowed velocity in that direction.
-	var max_speed = (Vector2(0, -1) * top_speed).rotated(get_rotation())
-	var x = clamp(_velocity.x, -abs(max_speed.x), abs(max_speed.x))
-	var y = clamp(_velocity.y, -abs(max_speed.y), abs(max_speed.y))
-	_velocity = Vector2(x, y)
+	#var max_speed = (Vector2(0, -1) * top_speed).rotated(get_rotation())
+	#var x = clamp(_velocity.x, -abs(max_speed.x), abs(max_speed.x))
+	#var y = clamp(_velocity.y, -abs(max_speed.y), abs(max_speed.y))
+	#_velocity = Vector2(x, y)
+	_velocity = _velocity.clamped(top_speed)
 	
 	# Torque depends that the vehicle is moving
 	#var torque = lerp(0, steering_torque, _velocity.length() / top_speed)
@@ -195,10 +199,13 @@ func do_physics(gas, braking, left, right, delta):
 	forward_vec = Vector2(0,-100)
 	
 	#reverse
-	if (get_linear_velocity().rotated(-get_rotation()).dot(forward_vec) > 0):
-		reverse = false
-	else:
+	var dot = get_linear_velocity().rotated(-get_rotation()).dot(forward_vec)
+#	print(str(dot))
+	if (dot < 0):
+#		print("Reverse")
 		reverse = true
+	else:
+		reverse = false
 	
 	
 
