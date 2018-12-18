@@ -7,10 +7,14 @@ var brake = false
 var left = false
 var right = false
 
+var brain = null
+
 # Start
 func _ready():
 	# Top Down Physics
 	set_gravity_scale(0.0)
+	
+	brain = get_node("brain")
 
 # Fixed Process
 func _physics_process(delta):
@@ -20,18 +24,26 @@ func _physics_process(delta):
 	var left = false
 	var right = false
 	
-	
-	# drive
-	if (speed <= 250):
+	# steering from boid
+#	print("Brain steer: " + str(brain.steer))
+
+#	if speed <= 50:
+	if brain.steer.y < 0:
 		gas = true
-	# Break / Reverse
 	else:
 		braking = true
-	# Steer Left
-	#if(Input.is_action_pressed("steer_left")):
-	#	left = true
-	# Steer Right
-	#elif(Input.is_action_pressed("steer_right")):
-	#	right = true
+	
+	if brain.steer.x < 0:
+		left = true
+	elif brain.steer.x > 0:
+		right = true
+		
+	
+	# drive
+#	if (speed <= 80): #250):
+#		gas = true
+	# Break / Reverse
+#	else:
+#		braking = true
 	
 	do_physics(gas, braking, left, right, delta)
