@@ -38,7 +38,7 @@ func _draw():
 	#print(str(parent.motion))
 	draw_vector(parent.motion, Vector2(), colors['YELLOW'])
 	
-	draw_vector(parent.forward_vec, Vector2(), colors['WHITE'])
+#	draw_vector(parent.forward_vec, Vector2(), colors['WHITE'])
 	
 	if "angle" in parent:
 		# this takes degrees
