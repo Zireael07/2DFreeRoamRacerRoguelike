@@ -77,11 +77,11 @@ func _ready():
 		# increment begin_id
 		begin_id = data[1]+1
 
-	print(path_look)
+	#print(path_look)
 	
 	# test (get path_look entry at id x)
 	var test = path_look[path_look.keys()[5]]
-	print("Test: " + str(test))
+	#print("Test: " + str(test))
 	var nav_path = nav.get_point_path(test[0], test[1])
 #	print("Nav path: " + str(nav_path))
 	
@@ -100,6 +100,7 @@ func _ready():
 	node.path = nav_path2d
 #	print(str(node.path))
 	node.update()
+	
 	
 
 #-------------------------

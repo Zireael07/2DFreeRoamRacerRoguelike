@@ -9,12 +9,17 @@ var right = false
 
 var brain = null
 
+var path
+
 # Start
 func _ready():
 	# Top Down Physics
 	set_gravity_scale(0.0)
 	
 	brain = get_node("brain")
+	
+	path = get_tree().get_nodes_in_group("world")[0].get_node("proc_map/Visualizer").path
+	brain.target = path[path.size()-1]
 
 # Fixed Process
 func _physics_process(delta):

@@ -38,7 +38,7 @@ func _physics_process(delta):
 	
 func _draw():
 	# multiply for visibility
-	draw_vector(steer* 20, Vector2(), colors['GREEN'])
+	draw_vector(steer* 40, Vector2(), colors['GREEN'])
 #	draw_vector(desired, Vector2(), colors['WHITE'])
 	draw_vector(velocity, Vector2(), colors['WHITE'])
 
