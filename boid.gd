@@ -5,6 +5,9 @@ var velocity = Vector2(0,0)
 var steer = Vector2(0,0)
 var desired = Vector2(0,0)
 
+var dist = 0.0
+
+
 var max_speed = 500
 var max_force = 9
 export(Vector2) var target = Vector2(800,700)
@@ -14,33 +17,38 @@ var marker
 func _ready():
 	# Called when the node is added to the scene for the first time.
 	# Initialization here
-	max_speed = get_parent().top_speed
+	max_speed = 300 # speed limit   #get_parent().top_speed
 	marker = get_parent().get_node("target_marker")
 	marker.set_position(to_local(target))
 	
 #	pass
 
-func _physics_process(delta):
+func _physics_process(delta):	
 	# marker
 	marker.set_position(to_local(target))
 	
 	# behavior
 	# steering behaviors operate in local space
 #	steer = seek(to_local(target))
-	steer = arrive(to_local(target), 30*2)
+	steer = arrive(to_local(target), 30*30)
+
+	# use real velocity to decide
+	# _velocity is rotated by parent's rotation, so we use the one that's rotated to fitt
+	velocity = get_parent().motion
+
 	
 	# normal stuff
-	velocity += steer
+#	velocity += steer
 	# don't exceed max speed
 	#velocity = velocity.normalized() * max_speed
-	velocity = velocity.clamped(max_speed)
+#	velocity = velocity.clamped(max_speed)
 	
 	
 func _draw():
 	# multiply for visibility
-	draw_vector(steer* 40, Vector2(), colors['GREEN'])
+	draw_vector(steer* 10, Vector2(), colors['GREEN'])
 #	draw_vector(desired, Vector2(), colors['WHITE'])
-	draw_vector(velocity, Vector2(), colors['WHITE'])
+#	draw_vector(velocity, Vector2(), colors['RED'])
 
 # ------------------------------------------
 # steering behaviors
@@ -77,13 +85,13 @@ func arrive(target, slowing_radius):
 
 	desired = target - get_position()
 	#print("Desired " + str(desired))
-	var distance = desired.length()
+	dist = desired.length()
 	#print("Dist: " + str(distance))
 	
-	if distance < slowing_radius:
-		#print("Slowing... " + str(distance/slowing_radius))
+	if dist < slowing_radius:
+#		print("Slowing... " + str(dist/slowing_radius))
 		# inside slowing area
-		desired = desired.normalized() * max_speed * (distance / slowing_radius)
+		desired = desired.normalized() * max_speed * (dist / slowing_radius)
 		
 	else:
 		#print("Not slowing")
