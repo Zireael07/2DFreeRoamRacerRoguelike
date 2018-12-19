@@ -38,9 +38,10 @@ func _physics_process(delta):
 	else:
 		braking = true
 	
-	if brain.steer.x < 0:
+	# the y check is to prevent trying to steer in place (turn on a dime)
+	if brain.steer.x < 0 and brain.steer.y < 0:
 		left = true
-	elif brain.steer.x > 0:
+	elif brain.steer.x > 0 and brain.steer.y < 0:
 		right = true
 		
 	
