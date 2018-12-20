@@ -8,6 +8,7 @@ var left = false
 var right = false
 
 var brain = null
+var current = 0
 
 var path
 
@@ -19,7 +20,8 @@ func _ready():
 	brain = get_node("brain")
 	
 	path = get_tree().get_nodes_in_group("world")[0].get_node("proc_map/Visualizer").path
-	brain.target = path[path.size()-1]
+	current = path.size()-1
+	brain.target = path[current]
 
 # Fixed Process
 func _physics_process(delta):
@@ -33,8 +35,12 @@ func _physics_process(delta):
 #	print("Brain steer: " + str(brain.steer))
 
 #	if speed <= 50:
-	if brain.steer.y < 0:
-		gas = true
+	if brain.steer.y < 0: # and speed <= 200:
+		# brake for sharp turns
+		if brain.steer.x > 7.5:
+			braking = true
+		else:
+			gas = true
 	else:
 		braking = true
 	
@@ -53,3 +59,18 @@ func _physics_process(delta):
 #		braking = true
 	
 	do_physics(gas, braking, left, right, delta)
+	
+	# proceed
+	if brain.dist <= 45:
+		print("Arrived at target, next: " + str(current-1))
+		if (current-1) > -1:
+			# for going other way round
+			current = current - 1
+			brain.target = path[current]
+	
+	# overshoot
+	if brain.dist <= 55 and brain.steer.x > 8.5:
+		if (current-1) > -1:
+			print("Overshot, next: " + str(current-1))
+			current = current - 1
+			brain.target = path[current]

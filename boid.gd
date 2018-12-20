@@ -29,8 +29,8 @@ func _physics_process(delta):
 	
 	# behavior
 	# steering behaviors operate in local space
-#	steer = seek(to_local(target))
-	steer = arrive(to_local(target), 30*30)
+	steer = seek(to_local(target))
+#	steer = arrive(to_local(target), 30*30)
 
 	# use real velocity to decide
 	# _velocity is rotated by parent's rotation, so we use the one that's rotated to fitt
@@ -67,6 +67,7 @@ func seek(target):
 	#print("Tg: " + str(target_obj.get_position()) + " " + str(get_position()))
 	
 	desired = target - get_position()
+	dist = desired.length()
 #	print("des: " + str(desired))
 	desired = desired.normalized() * max_speed
 	#print("max speed des: " + str(desired))
