@@ -17,7 +17,7 @@ var marker
 func _ready():
 	# Called when the node is added to the scene for the first time.
 	# Initialization here
-	max_speed = 300 # speed limit   #get_parent().top_speed
+	max_speed = 200 # speed limit   #get_parent().top_speed
 	marker = get_parent().get_node("target_marker")
 	marker.set_position(to_local(target))
 	

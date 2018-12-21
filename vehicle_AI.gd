@@ -37,7 +37,7 @@ func _physics_process(delta):
 #	if speed <= 50:
 	if brain.steer.y < 0: # and speed <= 200:
 		# brake for sharp turns
-		if brain.steer.x > 7.5:
+		if abs(brain.steer.x) > 7.5:
 			braking = true
 		else:
 			gas = true
