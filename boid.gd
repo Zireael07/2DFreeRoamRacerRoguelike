@@ -29,7 +29,10 @@ func _physics_process(delta):
 	
 	# behavior
 	# steering behaviors operate in local space
-	steer = seek(to_local(target))
+#	steer = seek(to_local(target))
+	# keeps enough speed to move while staying on track
+	steer = arrive(to_local(target), 4*30)
+	# arrives exactly
 #	steer = arrive(to_local(target), 30*30)
 
 	# use real velocity to decide
