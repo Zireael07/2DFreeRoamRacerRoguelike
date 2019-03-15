@@ -5,85 +5,39 @@
 [ext_resource path="res://vehicle_AI2D.tscn" type="PackedScene" id=3]
 [ext_resource path="res://UI.gd" type="Script" id=4]
 
-[node name="Node2D" type="Node2D" index="0" groups=[
+[node name="Node2D" type="Node2D" groups=[
 "world",
 ]]
 
-_sections_unfolded = [ "Pause", "Transform" ]
+[node name="proc_map" parent="." instance=ExtResource( 1 )]
 
-[node name="proc_map" parent="." index="0" instance=ExtResource( 1 )]
-
-[node name="player" parent="." index="1" instance=ExtResource( 2 )]
-
+[node name="player" parent="." instance=ExtResource( 2 )]
 position = Vector2( 500, 734 )
 rotation = 3.14159
-_sections_unfolded = [ "Transform" ]
 acceleration = 9
 top_speed = 500
 
-[node name="AI" parent="." index="2" instance=ExtResource( 3 )]
-
+[node name="AI" parent="." instance=ExtResource( 3 )]
 position = Vector2( 350, 750 )
 rotation = 3.14159
-_sections_unfolded = [ "Linear", "Transform" ]
 top_speed = 500
 
-[node name="CanvasLayer" type="CanvasLayer" parent="." index="3"]
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-layer = 1
-offset = Vector2( 0, 0 )
-rotation = 0.0
-scale = Vector2( 1, 1 )
-transform = Transform2D( 1, 0, 0, 1, 0, 0 )
-
-[node name="Control" type="Control" parent="CanvasLayer" index="0"]
-
+[node name="Control" type="Control" parent="CanvasLayer"]
 pause_mode = 2
-anchor_left = 0.0
-anchor_top = 0.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
 script = ExtResource( 4 )
-_sections_unfolded = [ "Pause" ]
 
-[node name="Label" type="Label" parent="CanvasLayer/Control" index="0"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
+[node name="Label" type="Label" parent="CanvasLayer/Control"]
 margin_right = 40.0
 margin_bottom = 14.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 4
 text = "Spd:"
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
 
-[node name="ColorRect" type="ColorRect" parent="CanvasLayer/Control" index="1"]
-
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer/Control"]
 visible = false
-anchor_left = 0.0
-anchor_top = 0.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
 color = Color( 0.222656, 0.222656, 0.222656, 0.574588 )
-
 

@@ -66,40 +66,42 @@ func _ready():
 	
 	var path_look = {}
 	
-	for i in range(roads_start_id, roads_start_id+4):
+	for i in range(roads_start_id, roads_start_id+5): #samples.size()-1):
 		var data = setup_nav_astar(pts, i, begin_id)
 		#print('Begin: ' + str(begin_id) + " end: " + str(data[0]) + " inters: " + str(data[1]))
 		#path_data.append([data[1], [begin_id, data[0]]])
-		path_look[data[2]] = [begin_id, data[0]]
-		# just in case, map inverse too
-		path_look[[data[2][1], data[2][0]]] = [data[0], begin_id]
+		if data:
+			path_look[data[2]] = [begin_id, data[0]]
+			# just in case, map inverse too
+			path_look[[data[2][1], data[2][0]]] = [data[0], begin_id]
 
-		# increment begin_id
-		begin_id = data[1]+1
+			# increment begin_id
+			begin_id = data[1]+1
 
-	#print(path_look)
+	print(path_look)
 	
-	# test (get path_look entry at id x)
-	var test = path_look[path_look.keys()[5]]
-	#print("Test: " + str(test))
-	var nav_path = nav.get_point_path(test[0], test[1])
-#	print("Nav path: " + str(nav_path))
+	if path_look.size() > 0:
+		# test (get path_look entry at id x)
+		var test = path_look[path_look.keys()[1]]
+		#print("Test: " + str(test))
+		var nav_path = nav.get_point_path(test[0], test[1])
+	#	print("Nav path: " + str(nav_path))
+		
+		var nav_path2d = PoolVector2Array()
+		for i in range(nav_path.size()):
+			# put in a 2d equivalent
+			nav_path2d.append(_3tov2(nav_path[i]))
 	
-	var nav_path2d = PoolVector2Array()
-	for i in range(nav_path.size()):
-		# put in a 2d equivalent
-		nav_path2d.append(_3tov2(nav_path[i]))
-
-	# visualize
-	var node = Node2D.new()
-	var script = load("res://path_visualizer.gd")
-	node.set_script(script)
-	add_child(node)
-	node.set_name("Visualizer")
-	
-	node.path = nav_path2d
-#	print(str(node.path))
-	node.update()
+		# visualize
+		var node = Node2D.new()
+		var script = load("res://path_visualizer.gd")
+		node.set_script(script)
+		add_child(node)
+		node.set_name("Visualizer")
+		
+		node.path = nav_path2d
+	#	print(str(node.path))
+		node.update()
 	
 	
 
@@ -166,6 +168,11 @@ func setup_nav_astar(pts, i, begin_id):
 	
 	print(get_child(i).get_name() + " real numbers: " + str(ret))
 	
+	if not has_node("Road_instance 0"):
+		return
+	if not has_node("Road_instance 1"):
+		return
+		
 	var turn1 = get_child(i).get_node("Road_instance 0").get_child(0).get_child(0)
 	var turn2 = get_child(i).get_node("Road_instance 1").get_child(0).get_child(0)
 

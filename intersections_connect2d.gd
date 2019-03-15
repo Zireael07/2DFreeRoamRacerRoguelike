@@ -26,9 +26,13 @@ func connect_intersections(one, two):
 		return false
 	
 	var src_exit = get_src_exit(get_child(one), get_child(two))
+	if not src_exit:
+		return
 	loc_src_exit = to_local(get_child(one).to_global(src_exit))
 	
 	var dest_exit = get_dest_exit(get_child(one), get_child(two))
+	if not dest_exit:
+		return
 	loc_dest_exit = to_local(get_child(two).to_global(dest_exit))
 	
 	extend_lines(one,two)
