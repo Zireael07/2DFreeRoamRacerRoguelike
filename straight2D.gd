@@ -23,9 +23,9 @@ func _ready():
 	var pos_end = Vector2(last.x-length/4, last.y)
 	
 	# normalizing the vectors solves problems with angle_to()
-	start_vector = Vector2(pos_start - first).normalized()*10
+	start_vector = (pos_start - first).normalized()*10
 	#B-A = from a to b
-	end_vector = Vector2(last - pos_end).normalized()*10
+	end_vector = (last - pos_end).normalized()*10
 	#print("[Straight] Start vector: " + str(start_vector) + " end vector " + str(end_vector))
 	
 	start_ref = first+start_vector
