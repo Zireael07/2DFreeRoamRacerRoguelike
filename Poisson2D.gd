@@ -1,5 +1,5 @@
 tool
-extends Node
+extends Node2D
 
 # Procedural algorithm for the generation of two-dimensional Poission-disc
 # sampled ("blue") noise. For mathematical details, please see the blog

@@ -1,5 +1,5 @@
 tool
-extends "res://delaunay2D.gd"
+extends "res://delaunay2d.gd"
 
 # class member variables go here, for example:
 var tris

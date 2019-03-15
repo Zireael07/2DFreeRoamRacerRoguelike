@@ -2,8 +2,6 @@
 
 [ext_resource path="res://Poisson2D.gd" type="Script" id=1]
 
-[node name="Poisson2D" type="Node2D" index="0"]
-
+[node name="Poisson2D" type="Node2D"]
 script = ExtResource( 1 )
-
 

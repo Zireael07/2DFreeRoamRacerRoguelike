@@ -1,7 +1,7 @@
 # based on https://github.com/TassuP/GodotStuff/blob/master/DelaunayTriangulator/Delaunay.gd
 
 tool
-extends Node
+extends Node2D
 
 # class member variables go here, for example:
 var points = []
