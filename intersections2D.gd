@@ -26,6 +26,9 @@ func connect_intersections(one, two):
 		#debug
 		#top_node.set_owner(self)
 	
+		# corner points are calculated here once, using distance from src_extended to src_exit
+		# therefore if distance from dest_extended to dest_exit is different, it breaks
+		# TODO: maybe fix?
 		var corner_points = get_corner_points(one, two, loc_src_extended, loc_dest_extended, loc_src_extended.distance_to(loc_src_exit))
 		
 		var intersect = get_intersection(corner_points[0], corner_points[1], loc_src_extended)
@@ -46,6 +49,8 @@ func connect_intersections(one, two):
 
 func get_corner_points(one, two, loc_src_extended, loc_dest_extended, dist):
 	var corners = []
+	
+	# multiplying by dist ensures that points are equidistant
 	
 	# B-A = A-> B
 	var vec_back = get_child(one).get_position() - loc_src_extended

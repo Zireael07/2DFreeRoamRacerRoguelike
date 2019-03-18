@@ -4,7 +4,7 @@ extends Node2D
 # class member variables go here, for example:
 # points
 var point_one = Vector2(0,10*15) #15 px = 1 m
-var point_two = Vector2(12*15,0)
+var point_two = Vector2(10*15,0)
 var point_three = Vector2(0,-10*15)
 
 var open_exits = [point_one, point_two, point_three]

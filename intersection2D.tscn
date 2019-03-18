@@ -3,25 +3,10 @@
 [ext_resource path="res://intersection2D.gd" type="Script" id=1]
 [ext_resource path="res://road.png" type="Texture" id=2]
 
-[node name="Node2D" type="Node2D" index="0"]
-
+[node name="Node2D" type="Node2D"]
 script = ExtResource( 1 )
-width = 70
 
-[node name="Polygon2D" type="Polygon2D" parent="." index="0"]
-
-polygon = PoolVector2Array( -70, 150, 70, 150, 70, 70, 180, 70, 180, -70, 70, -70, 70, -150, -70, -150 )
-uv = PoolVector2Array(  )
-color = Color( 1, 1, 1, 1 )
-vertex_colors = PoolColorArray(  )
-offset = Vector2( 0, 0 )
-antialiased = false
+[node name="Polygon2D" type="Polygon2D" parent="."]
 texture = ExtResource( 2 )
-texture_offset = Vector2( 0, 0 )
-texture_scale = Vector2( 1, 1 )
-texture_rotation_degrees = 0.0
-invert_enable = false
-invert_border = 100.0
-_sections_unfolded = [ "Texture" ]
-
+polygon = PoolVector2Array( -70, 150, 70, 150, 70, 70, 180, 70, 180, -70, 70, -70, 70, -150, -70, -150 )
 
