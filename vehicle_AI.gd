@@ -19,9 +19,10 @@ func _ready():
 	
 	brain = get_node("brain")
 	
-	path = get_tree().get_nodes_in_group("world")[0].get_node("proc_map/Visualizer").path
-	current = path.size()-1
-	brain.target = path[current]
+	if get_tree().get_nodes_in_group("world")[0].has_node("proc_map/Visualizer"):
+		path = get_tree().get_nodes_in_group("world")[0].get_node("proc_map/Visualizer").path
+		current = path.size()-1
+		brain.target = path[current]
 
 # Fixed Process
 func _physics_process(delta):
