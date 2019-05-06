@@ -7,54 +7,25 @@
 [ext_resource path="res://small marker.png" type="Texture" id=5]
 
 [sub_resource type="RectangleShape2D" id=1]
-
-custom_solver_bias = 0.0
 extents = Vector2( 15, 30 )
 
-[node name="RigidBody2D" type="RigidBody2D" index="0"]
-
-input_pickable = false
-collision_layer = 1
-collision_mask = 1
-mode = 0
-mass = 1.0
-friction = 1.0
-bounce = 0.0
-gravity_scale = 1.0
-custom_integrator = false
-continuous_cd = 0
-contacts_reported = 0
-contact_monitor = false
-sleeping = false
-can_sleep = true
-linear_velocity = Vector2( 0, 0 )
-linear_damp = -1.0
-angular_velocity = 0.0
-angular_damp = -1.0
+[node name="RigidBody2D" type="RigidBody2D"]
 script = ExtResource( 1 )
 acceleration = 9
 top_speed = 1000
-drag_coefficient = 0.99
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." index="0"]
-
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource( 1 )
 
-[node name="Sprite" type="Sprite" parent="." index="1"]
-
+[node name="Sprite" type="Sprite" parent="."]
 texture = ExtResource( 2 )
 
-[node name="Node2D" type="Node2D" parent="." index="2"]
-
+[node name="Node2D" type="Node2D" parent="."]
 script = ExtResource( 3 )
 
-[node name="brain" type="Node2D" parent="." index="3"]
-
+[node name="brain" type="Node2D" parent="."]
 script = ExtResource( 4 )
-target = Vector2( 800, 700 )
 
-[node name="target_marker" type="Sprite" parent="." index="4"]
-
+[node name="target_marker" type="Sprite" parent="."]
 texture = ExtResource( 5 )
-
 

@@ -13,13 +13,27 @@ var max_force = 9
 export(Vector2) var target = Vector2(800,700)
 var marker 
 
+var lane_change_deg = 20
+var lane_change_dist_factor = 1
+var loc_tg
 
 func _ready():
 	# Called when the node is added to the scene for the first time.
 	# Initialization here
 	max_speed = 200 # speed limit   #get_parent().top_speed
 	marker = get_parent().get_node("target_marker")
-	marker.set_position(to_local(target))
+	
+	# test changing lanes
+	
+	loc_tg = (get_parent().forward_vec*lane_change_dist_factor).rotated(deg2rad(lane_change_deg))
+	target = to_global(loc_tg)
+	marker.set_position(loc_tg)
+	
+	#var loc_tg2 = (get_parent().forward_vec*2).rotated(deg2rad(-30))
+	#ult_tg = loc_tg+loc_tg2
+	
+	# test normal driving
+	#marker.set_position(to_local(target))
 	
 #	pass
 
@@ -29,9 +43,9 @@ func _physics_process(delta):
 	
 	# behavior
 	# steering behaviors operate in local space
-#	steer = seek(to_local(target))
+	steer = seek(to_local(target))
 	# keeps enough speed to move while staying on track
-	steer = arrive(to_local(target), 4*30)
+	#steer = arrive(to_local(target), 4*30)
 	# arrives exactly
 #	steer = arrive(to_local(target), 30*30)
 

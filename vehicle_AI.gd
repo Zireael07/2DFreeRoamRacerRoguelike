@@ -63,15 +63,30 @@ func _physics_process(delta):
 	
 	# proceed
 	if brain.dist <= 45:
-		print("Arrived at target, next: " + str(current-1))
-		if (current-1) > -1:
-			# for going other way round
-			current = current - 1
-			brain.target = path[current]
-	
-	# overshoot
-	if brain.dist <= 55 and brain.steer.x > 8.5:
-		if (current-1) > -1:
-			print("Overshot, next: " + str(current-1))
-			current = current - 1
-			brain.target = path[current]
+		# lane change
+		#print("Arrived at target, number " + str(current) + " next " + str(current+1))
+		current = current + 1
+		# if it's the first time we arrived, angle back
+		if current == 1:
+			var loc_tg = (forward_vec*brain.lane_change_dist_factor).rotated(deg2rad(-brain.lane_change_deg))
+			brain.target = to_global(loc_tg)
+		if current == 2:
+			# head to point some distance ahead
+			var loc_tg = forward_vec*2
+			brain.target = to_global(loc_tg)
+		
+		# else nothing
+		
+	# path following	
+#		print("Arrived at target, next: " + str(current-1))
+#		if (current-1) > -1:
+#			# for going other way round
+#			current = current - 1
+#			brain.target = path[current]
+#
+#	# overshoot
+#	if brain.dist <= 55 and brain.steer.x > 8.5:
+#		if (current-1) > -1:
+#			print("Overshot, next: " + str(current-1))
+#			current = current - 1
+#			brain.target = path[current]
