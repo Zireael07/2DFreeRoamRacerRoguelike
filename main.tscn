@@ -51,5 +51,6 @@ position = Vector2( 700, 450 )
 position = Vector2( 605, 450 )
 
 [node name="RigidBody2D" parent="." instance=ExtResource( 7 )]
-position = Vector2( 600, 759 )
+position = Vector2( 809.334, 714.333 )
+rotation = -0.698132
 

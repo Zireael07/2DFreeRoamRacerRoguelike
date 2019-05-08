@@ -64,20 +64,24 @@ class CruiseState:
 
 class ObstacleState:
 	var player
+	var or_heading
 	
 	func _init(playr):
 		player = playr
+		# get current heading
+		or_heading = player.get_global_rotation()
+		#print("Original heading: " + str(or_heading))
 
 	func update(delta):
 		player.steer = player.match_velocity_length(10)
-		
+
 		if player.get_parent().has_node("Area2D"):
 			if player.get_parent().get_node("Area2D").colliding.size() > 0:
 				# combine two behaviors
 				# this is global x degrees, not local
-				player.steer += player.align(deg2rad(-45))
+				player.steer += player.align(or_heading - deg2rad(45))
 			else:
-				var align = player.align(deg2rad(0))
+				var align = player.align(or_heading)
 				player.steer += align
 				if align == Vector2(0,0):
 					player.set_state(STATE_CRUISE)
