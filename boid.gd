@@ -21,13 +21,13 @@ func _ready():
 	# Called when the node is added to the scene for the first time.
 	# Initialization here
 	max_speed = 200 # speed limit   #get_parent().top_speed
-	marker = get_parent().get_node("target_marker")
+	#marker = get_parent().get_node("target_marker")
 	
 	# test changing lanes
 	
-	loc_tg = (get_parent().forward_vec*lane_change_dist_factor).rotated(deg2rad(lane_change_deg))
-	target = to_global(loc_tg)
-	marker.set_position(loc_tg)
+	#loc_tg = (get_parent().forward_vec*lane_change_dist_factor).rotated(deg2rad(lane_change_deg))
+	#target = to_global(loc_tg)
+	#marker.set_position(loc_tg)
 	
 	#var loc_tg2 = (get_parent().forward_vec*2).rotated(deg2rad(-30))
 	#ult_tg = loc_tg+loc_tg2
@@ -37,17 +37,25 @@ func _ready():
 	
 #	pass
 
-func _physics_process(delta):	
+func _physics_process(delta):
+	
 	# marker
-	marker.set_position(to_local(target))
+	#marker.set_position(to_local(target))
 	
 	# behavior
 	# steering behaviors operate in local space
-	steer = seek(to_local(target))
+	#steer = seek(to_local(target))
 	# keeps enough speed to move while staying on track
 	#steer = arrive(to_local(target), 4*30)
 	# arrives exactly
 #	steer = arrive(to_local(target), 30*30)
+
+
+	# test
+	steer = match_velocity_length(10)
+	# combine two behaviors
+	# this is global 45 degrees, not local
+	steer += align(deg2rad(45))
 
 	# use real velocity to decide
 	# _velocity is rotated by parent's rotation, so we use the one that's rotated to fitt
@@ -118,5 +126,90 @@ func arrive(target, slowing_radius):
 
 	# desired minus current vel
 	steering = (desired - velocity).clamped(max_force)
+
+	return (steering)
+
+
+# helper to map orientation to range
+# works on radians
+func mapToRange(orientation):
+	while ((orientation > PI) || (orientation < -PI)):
+		if (orientation > PI):
+			orientation -= 2 * PI
+		elif (orientation < -PI):
+			orientation += 2 * PI;
+
+	return orientation;
+	
+# align works on global rotations
+func align(target):
+	var steering = Vector2(0,0)
+	
+	# tuned so that we avoid the "brake for sharp turn" code
+	var max_force = 6
+	
+	var gl_rot = get_parent().get_global_transform().get_rotation()
+	var change = target - gl_rot
+	change = mapToRange(change)
+	
+	# match sign
+	if sign(change) == -1:
+		max_force = max_force * -1
+	
+	#print("Orientation change is " + str(change))
+	
+	if abs(change) < 0.2: # tolerance
+		#print("Orientation hit tolerance")
+		steering = Vector2(0,0)
+		get_parent().stop = true
+		# early return
+		#return (steering)
+	else:
+		if abs(change) < deg2rad(45): # slow radius
+			# pretty much the same as arrive but for floats not vectors
+			steering = Vector2(clamp(max_force, -1, 1) * (abs(change) /deg2rad(15)), 0)
+			#print("steer: " + str(steering))
+		else:
+			steering = Vector2(max_force, 0)
+			#print("Steer: " + str(steering))
+	
+	return (steering)
+
+# for holding speed
+func match_velocity_length(target, reverse=false):
+	var steering = Vector2(0,0)
+
+	var change = target - velocity.length()
+	#print("Change: " + str(change) + " speed " + str(velocity.length()))
+	
+	# get it moving if velocity is 0
+	var vel_for_des
+	if target > 0 and velocity.length() == 0:
+		#print("Pretend")
+		# pretend it's bigger
+		vel_for_des = Vector2(0,1)
+	else:
+		# ignore reverse
+		if not reverse and velocity.y < 0:
+			vel_for_des = Vector2(velocity.x, -velocity.y)
+		# force reverse
+		elif reverse and velocity.y > 0:
+			vel_for_des = Vector2(velocity.x, -velocity.y)
+		else:
+			vel_for_des = velocity
+		
+	#print("Vel: " + str(vel_for_des) + " normalized " + str(vel_for_des.normalized()))
+	
+	# we change the sign because we press gas when steering.y is negative
+	desired = vel_for_des.normalized() * -target
+	#print("Des: " + str(desired))
+	
+	
+	steering = (desired - velocity).clamped(max_force)
+	# prevent slight listing
+	steering = Vector2(0, steering.y)
+	#print("Steer" + str(steering))
+	
+	
 
 	return (steering)

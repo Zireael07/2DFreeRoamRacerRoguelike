@@ -12,6 +12,8 @@ var current = 0
 
 var path
 
+var stop = false
+
 # Start
 func _ready():
 	# Top Down Physics
@@ -35,15 +37,24 @@ func _physics_process(delta):
 	# steering from boid
 #	print("Brain steer: " + str(brain.steer))
 
-#	if speed <= 50:
-	if brain.steer.y < 0: # and speed <= 200:
-		# brake for sharp turns
-		if abs(brain.steer.x) > 7.5:
+	# stop
+	if stop:
+		if speed > 10:
 			braking = true
-		else:
+		if reverse and speed > 10:
 			gas = true
+
 	else:
-		braking = true
+	#	if speed <= 50:
+		if brain.steer.y < 0: # and speed <= 200:
+			# brake for sharp turns
+			if abs(brain.steer.x) > 7.5:
+				braking = true
+			else:
+				gas = true
+		else:
+			if speed > 0 and speed < 100:
+				braking = true
 	
 	# the y check is to prevent trying to steer in place (turn on a dime)
 	if brain.steer.x < 0 and brain.steer.y < 0:
@@ -61,19 +72,24 @@ func _physics_process(delta):
 	
 	do_physics(gas, braking, left, right, delta)
 	
+	# stop
+#	if brain.steer == Vector2(0,0):
+#		stop = true
+	
+	
 	# proceed
-	if brain.dist <= 45:
-		# lane change
-		#print("Arrived at target, number " + str(current) + " next " + str(current+1))
-		current = current + 1
-		# if it's the first time we arrived, angle back
-		if current == 1:
-			var loc_tg = (forward_vec*brain.lane_change_dist_factor).rotated(deg2rad(-brain.lane_change_deg))
-			brain.target = to_global(loc_tg)
-		if current == 2:
-			# head to point some distance ahead
-			var loc_tg = forward_vec*2
-			brain.target = to_global(loc_tg)
+#	if brain.dist <= 45:
+#		# lane change
+#		#print("Arrived at target, number " + str(current) + " next " + str(current+1))
+#		current = current + 1
+#		# if it's the first time we arrived, angle back
+#		if current == 1:
+#			var loc_tg = (forward_vec*brain.lane_change_dist_factor).rotated(deg2rad(-brain.lane_change_deg))
+#			brain.target = to_global(loc_tg)
+#		if current == 2:
+#			# head to point some distance ahead
+#			var loc_tg = forward_vec*2
+#			brain.target = to_global(loc_tg)
 		
 		# else nothing
 		
