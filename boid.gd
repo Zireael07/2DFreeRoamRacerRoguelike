@@ -17,6 +17,7 @@ var lane_change_deg = 20
 var lane_change_dist_factor = 1
 var loc_tg
 
+
 func _ready():
 	# Called when the node is added to the scene for the first time.
 	# Initialization here
@@ -52,14 +53,14 @@ func _physics_process(delta):
 
 
 	# test
-	steer = match_velocity_length(10)
-	# combine two behaviors
-	# this is global 45 degrees, not local
-	steer += align(deg2rad(45))
-
-	# use real velocity to decide
-	# _velocity is rotated by parent's rotation, so we use the one that's rotated to fitt
-	velocity = get_parent().motion
+#	steer = match_velocity_length(10)
+#	# combine two behaviors
+#	# this is global 45 degrees, not local
+#	steer += align(deg2rad(45))
+#
+#	# use real velocity to decide
+#	# _velocity is rotated by parent's rotation, so we use the one that's rotated to fitt
+#	velocity = get_parent().motion
 
 	
 	# normal stuff
@@ -67,7 +68,7 @@ func _physics_process(delta):
 	# don't exceed max speed
 	#velocity = velocity.normalized() * max_speed
 #	velocity = velocity.clamped(max_speed)
-	
+	pass
 	
 func _draw():
 	# multiply for visibility
@@ -158,14 +159,14 @@ func align(target):
 	
 	#print("Orientation change is " + str(change))
 	
-	if abs(change) < 0.2: # tolerance
+	if abs(change) < 0.1: # tolerance
 		#print("Orientation hit tolerance")
 		steering = Vector2(0,0)
-		get_parent().stop = true
+		#get_parent().stop = true
 		# early return
 		#return (steering)
 	else:
-		if abs(change) < deg2rad(45): # slow radius
+		if abs(change) < deg2rad(35): # slow radius
 			# pretty much the same as arrive but for floats not vectors
 			steering = Vector2(clamp(max_force, -1, 1) * (abs(change) /deg2rad(15)), 0)
 			#print("steer: " + str(steering))
