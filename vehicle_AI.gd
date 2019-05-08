@@ -35,7 +35,8 @@ func _physics_process(delta):
 	var right = false
 	
 	# steering from boid
-#	print("Brain steer: " + str(brain.steer))
+	#if brain.steer != Vector2(0,0):
+	#	print("Brain steer: " + str(brain.steer))
 
 	# stop
 	if stop:
@@ -56,10 +57,11 @@ func _physics_process(delta):
 			if speed > 0 and speed < 100:
 				braking = true
 	
-	# the y check is to prevent trying to steer in place (turn on a dime)
-	if brain.steer.x < 0 and brain.steer.y < 0:
+	## the y check was to prevent trying to steer in place (turn on a dime)
+	# but it's better to check for some minimum speed
+	if brain.steer.x < 0 and speed > 2: #and brain.steer.y < 0:
 		left = true
-	elif brain.steer.x > 0 and brain.steer.y < 0:
+	elif brain.steer.x > 0 and speed > 2: #and brain.steer.y < 0:
 		right = true
 		
 	
@@ -69,6 +71,8 @@ func _physics_process(delta):
 	# Break / Reverse
 #	else:
 #		braking = true
+	
+	#print("g: " + str(gas) + " b: " + str(brake) + " l: " + str(left) +  " r: " + str(right))
 	
 	do_physics(gas, braking, left, right, delta)
 	
