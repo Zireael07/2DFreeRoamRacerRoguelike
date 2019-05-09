@@ -1,17 +1,22 @@
 tool
-extends "intersections2D.gd"
+extends "map2D.gd"
 
 # class member variables go here, for example:
 
-#var intersections = []
+var samples = []
+var edges = []
 
 func _ready():
+	# setup
+	samples = get_children()
+	
+	
 	var sorted = sort_intersections_distance()
 	var initial_int = sorted[0][1]
 	print("Initial int: " + str(initial_int))
 
 	# for test purposes
-	var edges = [Vector2(0,1), Vector2(0,2), Vector2(0,3), Vector2(1,3), Vector2(2,3)]
+	edges = [Vector2(0,1), Vector2(0,2), Vector2(0,3), Vector2(1,3), Vector2(2,3)]
 
 	var next_ints = []
 	var res = []
@@ -63,7 +68,8 @@ func _ready():
 
 	connect_intersections(2,3)
 
-
+	# test
+	setup_navi(samples, edges, 1, false)
 
 func connect_intersections(one, two):
 	# call the extended script
