@@ -48,4 +48,4 @@ func _physics_process(delta):
 	var vel = get_linear_velocity().length()
 	var m_per_s = round(round(vel)/(car_length/2))
 	var kph = round(m_per_s*3.6)
-	get_parent().get_node("CanvasLayer/Control/Label").set_text("Speed : " + str(kph) + " kph " +  str(m_per_s) + " m/s") #str(round(vel)))
+	get_parent().get_parent().get_node("CanvasLayer/Control/Label").set_text("Speed : " + str(kph) + " kph " +  str(m_per_s) + " m/s") #str(round(vel)))

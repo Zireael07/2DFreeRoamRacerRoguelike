@@ -1,6 +1,6 @@
 [gd_scene load_steps=8 format=2]
 
-[ext_resource path="res://procedural_map2D.tscn" type="PackedScene" id=1]
+[ext_resource path="res://intersections_2D.tscn" type="PackedScene" id=1]
 [ext_resource path="res://vehicle_player2D.tscn" type="PackedScene" id=2]
 [ext_resource path="res://vehicle_AI2D.tscn" type="PackedScene" id=3]
 [ext_resource path="res://lamplight.tscn" type="PackedScene" id=4]
@@ -12,30 +12,29 @@
 "world",
 ]]
 
-[node name="proc_map" parent="." instance=ExtResource( 1 )]
+[node name="Node2D" parent="." instance=ExtResource( 1 )]
 
 [node name="Node2D2" type="Node2D" parent="."]
-editor/display_folded = true
+position = Vector2( -120, 0 )
 
 [node name="player" parent="Node2D2" instance=ExtResource( 2 )]
-position = Vector2( 500, 760 )
+position = Vector2( 100, 10 )
 rotation = 3.14159
 acceleration = 9
 top_speed = 500
 
 [node name="AI" parent="Node2D2" instance=ExtResource( 3 )]
-position = Vector2( 350, 750 )
 rotation = 3.14159
 top_speed = 500
 
 [node name="Node2D" parent="Node2D2" instance=ExtResource( 4 )]
-position = Vector2( 700, 450 )
+position = Vector2( 100, -200 )
 
 [node name="building" parent="Node2D2" instance=ExtResource( 5 )]
-position = Vector2( 605, 450 )
+position = Vector2( 225, -300 )
 
 [node name="RigidBody2D" parent="Node2D2" instance=ExtResource( 6 )]
-position = Vector2( 809.334, 714.333 )
+position = Vector2( 460, 35 )
 rotation = -0.698132
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
