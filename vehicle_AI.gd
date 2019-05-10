@@ -14,17 +14,24 @@ var path
 
 var stop = false
 
+# goes down to brain.gd
+export var state = 0
+
 # Start
 func _ready():
 	# Top Down Physics
 	set_gravity_scale(0.0)
 	
 	brain = get_node("brain")
+	# set state
+	brain.set_state(state)
 	
-	if get_tree().get_nodes_in_group("world")[0].has_node("proc_map/Visualizer"):
-		path = get_tree().get_nodes_in_group("world")[0].get_node("proc_map/Visualizer").path
+	if get_tree().get_nodes_in_group("world")[0].get_child(0).has_node("Visualizer"):
+		path = get_tree().get_nodes_in_group("world")[0].get_child(0).get_node("Visualizer").path
+		#current = 0
 		current = path.size()-1
 		brain.target = path[current]
+		print("Setting target according to path.. " + str(brain.target))
 
 # Fixed Process
 func _physics_process(delta):
@@ -82,7 +89,28 @@ func _physics_process(delta):
 	
 	
 	# proceed
-#	if brain.dist <= 45:
+	if brain.get_state() == brain.STATE_PATH:
+		#print("We're in pathing state")
+		if brain.dist <= 45 and not stop:
+			# path following	
+			print("Arrived at target, next: " + str(current-1))
+			if (current-1) > -1:
+				# for going other way round
+				current = current - 1
+				brain.target = path[current]
+			else:
+				stop = true
+	
+		# overshoot
+		if brain.dist <= 55 and brain.steer.x > 8.5 and not stop:
+			if (current-1) > -1:
+				print("Overshot, next: " + str(current-1))
+				current = current - 1
+				brain.target = path[current]
+			else:
+				stop = true
+			
+			
 #		# lane change
 #		#print("Arrived at target, number " + str(current) + " next " + str(current+1))
 #		current = current + 1
@@ -94,19 +122,5 @@ func _physics_process(delta):
 #			# head to point some distance ahead
 #			var loc_tg = forward_vec*2
 #			brain.target = to_global(loc_tg)
-		
+
 		# else nothing
-		
-	# path following	
-#		print("Arrived at target, next: " + str(current-1))
-#		if (current-1) > -1:
-#			# for going other way round
-#			current = current - 1
-#			brain.target = path[current]
-#
-#	# overshoot
-#	if brain.dist <= 55 and brain.steer.x > 8.5:
-#		if (current-1) > -1:
-#			print("Overshot, next: " + str(current-1))
-#			current = current - 1
-#			brain.target = path[current]

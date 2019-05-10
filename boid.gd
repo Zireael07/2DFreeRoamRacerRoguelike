@@ -21,8 +21,8 @@ var loc_tg
 func _ready():
 	# Called when the node is added to the scene for the first time.
 	# Initialization here
-	max_speed = 200 # speed limit   #get_parent().top_speed
-	#marker = get_parent().get_node("target_marker")
+	max_speed = 100 # speed limit   #get_parent().top_speed
+	marker = get_parent().get_node("target_marker")
 	
 	# test changing lanes
 	
@@ -39,19 +39,6 @@ func _ready():
 #	pass
 
 func _physics_process(delta):
-	
-	# marker
-	#marker.set_position(to_local(target))
-	
-	# behavior
-	# steering behaviors operate in local space
-	#steer = seek(to_local(target))
-	# keeps enough speed to move while staying on track
-	#steer = arrive(to_local(target), 4*30)
-	# arrives exactly
-#	steer = arrive(to_local(target), 30*30)
-
-
 	# test
 #	steer = match_velocity_length(10)
 #	# combine two behaviors

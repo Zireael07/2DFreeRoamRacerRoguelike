@@ -4,10 +4,12 @@ extends "boid.gd"
 
 # FSM
 onready var state = CruiseState.new(self)
+
 var prev_state
 
 const STATE_CRUISE = 0
 const STATE_OBSTACLE   = 1
+const STATE_PATH = 2
 
 signal state_changed
 
@@ -26,6 +28,8 @@ func set_state(new_state):
 		state = CruiseState.new(self)
 	elif new_state == STATE_OBSTACLE:
 		state = ObstacleState.new(self)
+	elif new_state == STATE_PATH:
+		state = PathState.new(self)
 
 	emit_signal("state_changed", self)
 	
@@ -36,6 +40,8 @@ func get_state():
 		return STATE_CRUISE
 	elif state is ObstacleState:
 		return STATE_OBSTACLE
+	elif state is PathState:
+		return STATE_PATH
 
 # generic
 func _physics_process(delta):
@@ -91,4 +97,31 @@ class ObstacleState:
 		player.velocity = player.get_parent().motion
 		
 
+class PathState:
+	var player
+	
+	func _init(playr):
+		player = playr
+		
+	func update(delta):
+		# marker
+		player.marker.set_position(player.to_local(player.target))
+	
+		# behavior
+		# steering behaviors operate in local space
+		#steer = seek(to_local(target))
+		# keeps enough speed to move while staying on track
+		var spd_steer = player.match_velocity_length(40)
+		#print("Steer" + str(spd_steer))
+		var arr = player.arrive(player.to_local(player.target), 15*30)
+		#print("Arr" + str(arr))
+		#player.steer = arr;
+		player.steer = spd_steer + arr;
+		#player.steer = Vector2(arr.x, spd_steer.y);
+		#print("Post: " + str(player.steer))
+		# arrives exactly
+	#	steer = arrive(to_local(target), 30*30)
 
+		# use real velocity to decide
+		# _velocity is rotated by parent's rotation, so we use the one that's rotated to fit
+		player.velocity = player.get_parent().motion

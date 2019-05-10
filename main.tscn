@@ -26,6 +26,7 @@ top_speed = 500
 [node name="AI" parent="Node2D2" instance=ExtResource( 3 )]
 rotation = 3.14159
 top_speed = 500
+state = 2
 
 [node name="Node2D" parent="Node2D2" instance=ExtResource( 4 )]
 position = Vector2( 100, -200 )
