@@ -8,7 +8,11 @@ var edges = []
 
 func _ready():
 	# setup
-	samples = get_children()
+	for i in range(0, get_child_count()):
+		var pos = get_child(i).position
+		samples.append(pos)
+		
+	#samples = get_children()
 	
 	
 	var sorted = sort_intersections_distance()
