@@ -111,9 +111,11 @@ class PathState:
 		# steering behaviors operate in local space
 		#steer = seek(to_local(target))
 		# keeps enough speed to move while staying on track
-		var spd_steer = player.match_velocity_length(40)
+		# scale: 30 = 2 m/s
+		var spd_steer = player.match_velocity_length(100)
 		#print("Steer" + str(spd_steer))
-		var arr = player.arrive(player.to_local(player.target), 15*30)
+		# the value here (how many car lengths) should probably be speed dependent (15 works fine for speeds < 50)
+		var arr = player.arrive(player.to_local(player.target), 25*30)
 		#print("Arr" + str(arr))
 		#player.steer = arr;
 		player.steer = spd_steer + arr;
