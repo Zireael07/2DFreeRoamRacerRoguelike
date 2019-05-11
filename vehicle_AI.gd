@@ -66,12 +66,16 @@ func _physics_process(delta):
 			if speed > 0 and speed < 100:
 				braking = true
 	
+	# minimum speed just like with old, analog-style inputs (15 equals 1 m/s, since the car is 30 px long = 2 m)
+	if brain.steer.x != 0 and speed > 15:
+		joy = brain.steer
+
 	## the y check was to prevent trying to steer in place (turn on a dime)
-	# but it's better to check for some minimum speed
-	if brain.steer.x < 0 and speed > 2: #and brain.steer.y < 0:
-		left = true
-	elif brain.steer.x > 0 and speed > 2: #and brain.steer.y < 0:
-		right = true
+	# but it's better to check for some minimum speed (15 equals 1 m/s, since the car is 30 px long = 2 m)
+#	if brain.steer.x < 0 and speed > 15: #and brain.steer.y < 0:
+#		left = true
+#	elif brain.steer.x > 0 and speed > 15: #and brain.steer.y < 0:
+#		right = true
 		
 	
 	# drive
