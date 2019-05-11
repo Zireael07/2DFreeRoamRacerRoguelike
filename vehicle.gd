@@ -56,7 +56,7 @@ func _ready():
 func _physics_process(delta):
 	pass
 
-func do_physics(gas, braking, left, right, delta):
+func do_physics(gas, braking, left, right, joy, delta):
 	#print("D: " + str(delta))
 	speed = get_linear_velocity().length()
 	
@@ -85,12 +85,15 @@ func do_physics(gas, braking, left, right, delta):
 #	# Add drift to velocity
 #	_velocity = get_up_velocity() + (get_right_velocity() * _drift_factor)
 	
-	if (left):
-		steer_target = -STEER_LIMIT
-	elif (right):
-		steer_target = STEER_LIMIT
-	else: #if (not left and not right):
-		steer_target = 0
+	if joy != Vector2(0,0):
+		steer_target = joy.x
+	else:
+		if (left):
+			steer_target = -STEER_LIMIT
+		elif (right):
+			steer_target = STEER_LIMIT
+		else: #if (not left and not right):
+			steer_target = 0
 	
 #	# Steer Left
 #	if(left):

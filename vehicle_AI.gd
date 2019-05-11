@@ -40,6 +40,8 @@ func _physics_process(delta):
 	var braking = false
 	var left = false
 	var right = false
+	var joy = Vector2(0,0)
+	
 	
 	# steering from boid
 	#if brain.steer != Vector2(0,0):
@@ -81,7 +83,7 @@ func _physics_process(delta):
 	
 	#print("g: " + str(gas) + " b: " + str(brake) + " l: " + str(left) +  " r: " + str(right))
 	
-	do_physics(gas, braking, left, right, delta)
+	do_physics(gas, braking, left, right, joy, delta)
 	
 	# stop
 #	if brain.steer == Vector2(0,0):
