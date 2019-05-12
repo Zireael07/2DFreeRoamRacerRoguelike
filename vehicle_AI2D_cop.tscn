@@ -1,7 +1,7 @@
 [gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://vehicle_AI.gd" type="Script" id=1]
-[ext_resource path="res://car_red_small_3.png" type="Texture" id=2]
+[ext_resource path="res://car_blue_small_3.png" type="Texture" id=2]
 [ext_resource path="res://movement_visualizer.gd" type="Script" id=3]
 [ext_resource path="res://brain.gd" type="Script" id=4]
 [ext_resource path="res://small marker.png" type="Texture" id=5]
@@ -14,8 +14,8 @@ extents = Vector2( 15, 30 )
 extents = Vector2( 20, 100 )
 
 [node name="RigidBody2D" type="RigidBody2D"]
-sleeping = true
 script = ExtResource( 1 )
+state = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource( 1 )

@@ -8,6 +8,7 @@
 extents = Vector2( 15, 30 )
 
 [node name="RigidBody2D" type="RigidBody2D" groups=[
+"player",
 "car",
 ]]
 script = ExtResource( 1 )

@@ -10,6 +10,7 @@ var prev_state
 const STATE_CRUISE = 0
 const STATE_OBSTACLE   = 1
 const STATE_PATH = 2
+const STATE_COP = 3
 
 signal state_changed
 
@@ -30,6 +31,8 @@ func set_state(new_state, param=null):
 		state = ObstacleState.new(self, param)
 	elif new_state == STATE_PATH:
 		state = PathState.new(self)
+	elif new_state == STATE_COP:
+		state = CopState.new(self)
 
 	emit_signal("state_changed", self)
 	
@@ -42,6 +45,8 @@ func get_state():
 		return STATE_OBSTACLE
 	elif state is PathState:
 		return STATE_PATH
+	elif state is CopState:
+		return STATE_COP
 
 # generic
 func _physics_process(delta):
@@ -143,3 +148,24 @@ class PathState:
 			# exclude buildings and other cars
 			if not coll.is_in_group("building") and not coll.is_in_group("car"):
 				player.set_state(STATE_OBSTACLE, coll)
+				
+class CopState:
+	var player
+	
+	func _init(playr):
+		player = playr
+		
+	func update(delta):
+		# get the player car
+		var cop_tg = player.get_tree().get_nodes_in_group("player")[0].get_global_position()
+		# marker
+		player.marker.set_position(player.to_local(cop_tg))
+		
+		player.steer = player.match_velocity_length(30)
+		player.steer += player.seek(player.to_local(cop_tg))
+		
+		# use real velocity to decide
+		# _velocity is rotated by parent's rotation, so we use the one that's rotated to fit
+		player.velocity = player.get_parent().motion
+		
+	
