@@ -135,7 +135,7 @@ func do_physics(gas, braking, left, right, joy, delta):
 		get_node("wheel").set_rotation(steer_angle)
 		get_node("wheel2").set_rotation(steer_angle)
 	
-	var dot = get_linear_velocity().rotated(-get_rotation()).dot(forward_vec)
+	dot = get_linear_velocity().rotated(-get_rotation()).dot(forward_vec)
 	# Accelerate
 	if(gas):
 		if has_node("rear light"):

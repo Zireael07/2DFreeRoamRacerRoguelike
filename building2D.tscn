@@ -1,39 +1,18 @@
 [gd_scene load_steps=2 format=2]
 
 [sub_resource type="RectangleShape2D" id=1]
-
-custom_solver_bias = 0.0
 extents = Vector2( 50, 40 )
 
-[node name="building" type="Node2D" index="0"]
+[node name="building" type="Node2D"]
 
-[node name="Polygon2D" type="Polygon2D" parent="." index="0"]
-
-polygon = PoolVector2Array( 0, -40, 50, -40, 50, 0, 50, 40, -50, 40, -50, -40 )
-uv = PoolVector2Array(  )
+[node name="Polygon2D" type="Polygon2D" parent="."]
 color = Color( 0.660156, 0.654999, 0.654999, 1 )
-vertex_colors = PoolColorArray(  )
-offset = Vector2( 0, 0 )
-antialiased = false
-texture = null
-texture_offset = Vector2( 0, 0 )
-texture_scale = Vector2( 1, 1 )
-texture_rotation_degrees = 0.0
-invert_enable = false
-invert_border = 100.0
+polygon = PoolVector2Array( 0, -40, 50, -40, 50, 0, 50, 40, -50, 40, -50, -40 )
 
-[node name="StaticBody2D" type="StaticBody2D" parent="." index="1"]
+[node name="StaticBody2D" type="StaticBody2D" parent="." groups=[
+"building",
+]]
 
-input_pickable = false
-collision_layer = 1
-collision_mask = 1
-constant_linear_velocity = Vector2( 0, 0 )
-constant_angular_velocity = 0.0
-friction = 1.0
-bounce = 0.0
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" index="0"]
-
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
 shape = SubResource( 1 )
-
 
