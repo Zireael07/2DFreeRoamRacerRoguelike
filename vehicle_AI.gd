@@ -6,6 +6,7 @@ var gas = false
 var brake = false
 var left = false
 var right = false
+var joy = Vector2(0,0)
 
 var brain = null
 var current = 0
@@ -37,11 +38,11 @@ func _ready():
 # Fixed Process
 func _physics_process(delta):
 	# reset input
-	var gas = false
-	var braking = false
-	var left = false
-	var right = false
-	var joy = Vector2(0,0)
+	gas = false
+	brake = false
+	left = false
+	right = false
+	joy = Vector2(0,0)
 	
 	
 	# steering from boid
@@ -51,21 +52,25 @@ func _physics_process(delta):
 	# stop
 	if stop:
 		if speed > 10:
-			braking = true
+			brake = true
 		if reverse and speed > 10:
 			gas = true
 
 	else:
 	#	if speed <= 50:
 		if brain.steer.y < 0: # and speed <= 200:
-			# brake for sharp turns
-			if abs(brain.steer.x) > 7.5:
-				braking = true
+			# brake for sharp turns if going at speed
+			if abs(brain.steer.x) > 7.5 and speed > 30:
+				if not reverse:
+					brake = true
+				else:
+					gas = true
 			else:
 				gas = true
+				#print(get_name() + " gas")
 		else:
 			if speed > 0 and speed < 100:
-				braking = true
+				brake = true
 	
 	# minimum speed just like with old, analog-style inputs (15 equals 1 m/s, since the car is 30 px long = 2 m)
 	if brain.steer.x != 0 and speed > 15:
@@ -85,10 +90,10 @@ func _physics_process(delta):
 	# Break / Reverse
 #	else:
 #		braking = true
+	#if (get_name() == "copAI"):
+	#	print("g: " + str(gas) + " b: " + str(brake) + " l: " + str(left) +  " r: " + str(right))
 	
-	#print("g: " + str(gas) + " b: " + str(brake) + " l: " + str(left) +  " r: " + str(right))
-	
-	do_physics(gas, braking, left, right, joy, delta)
+	do_physics(gas, brake, left, right, joy, delta)
 	
 	# stop
 #	if brain.steer == Vector2(0,0):
@@ -110,7 +115,7 @@ func _physics_process(delta):
 		
 		if brain.dist <= 45 and not stop:
 			# path following	
-			print("Arrived at target, next: " + str(current-1))
+			#print("Arrived at target, next: " + str(current-1))
 			if (current-1) > -1:
 				# for going other way round
 				current = current - 1
@@ -121,7 +126,7 @@ func _physics_process(delta):
 		# overshoot
 		if brain.dist <= 55 and brain.steer.x > 8.5 and not stop:
 			if (current-1) > -1:
-				print("Overshot, next: " + str(current-1))
+				#print("Overshot, next: " + str(current-1))
 				current = current - 1
 				brain.target = path[current]
 			else:
@@ -130,7 +135,7 @@ func _physics_process(delta):
 		#if we passed the point, don't backtrack
 		if (t_dot < 0 and not stop):
 			if (current-1) > -1:
-				print("Overshot, next: " + str(current-1))
+				#print("Overshot, next: " + str(current-1))
 				current = current - 1
 				brain.target = path[current]
 			else:
