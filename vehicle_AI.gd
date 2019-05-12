@@ -13,6 +13,7 @@ var current = 0
 var path
 
 var stop = false
+var t_dot
 
 # goes down to brain.gd
 export var state = 0
@@ -97,6 +98,16 @@ func _physics_process(delta):
 	# proceed
 	if brain.get_state() == brain.STATE_PATH:
 		#print("We're in pathing state")
+		
+		t_dot = forward_vec.dot(brain.marker.get_position())
+		
+		
+		#B-A = from A to B
+		#var target_vec = path[current] - get_position()
+		#print("Target_v" + str(target_vec))
+		#t_dot = forward_vec.dot(target_vec)
+		
+		
 		if brain.dist <= 45 and not stop:
 			# path following	
 			print("Arrived at target, next: " + str(current-1))
@@ -109,6 +120,15 @@ func _physics_process(delta):
 	
 		# overshoot
 		if brain.dist <= 55 and brain.steer.x > 8.5 and not stop:
+			if (current-1) > -1:
+				print("Overshot, next: " + str(current-1))
+				current = current - 1
+				brain.target = path[current]
+			else:
+				stop = true
+				
+		#if we passed the point, don't backtrack
+		if (t_dot < 0 and not stop):
 			if (current-1) > -1:
 				print("Overshot, next: " + str(current-1))
 				current = current - 1
