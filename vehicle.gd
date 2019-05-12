@@ -145,15 +145,19 @@ func do_physics(gas, braking, left, right, joy, delta):
 		var axis = 1 # Set it to 1 since we are not using the trigger
 		
 		# those result in the velocity being offset from heading (the car accumulates a slide)
-		_velocity += get_up() * acceleration * axis
+		var add = get_up() * acceleration * axis
+		_velocity += add
+	
 		#_velocity += Vector2(0,-1).rotated(get_rotation()) * acceleration * axis
 		#print(str(_velocity))
 
 		# fix the sliding (offset)		
 		var angle_to = _velocity.angle_to(get_up())
-		if dot < 0 and _velocity.length() > 5:
+		# changed the threshold to 12 since it was possible to get stuck at a speed of roughly 9
+		# velocity before adding and after adding, post rotation, would be almost the same
+		if dot < 0 and _velocity.length() > 12: #and not reverse:
 			angle_to = _velocity.angle_to(-get_up())
-		if dot < 0 and _velocity.length() < 5:
+		if dot < 0 and _velocity.length() < 12:
 			reverse = false
 			
 		_velocity = _velocity.rotated(angle_to)
@@ -174,7 +178,7 @@ func do_physics(gas, braking, left, right, joy, delta):
 		var angle_to = _velocity.angle_to(get_up())
 		reverse = false
 		# enable reversing
-		if dot < 0 or (dot > 0 and _velocity.length() < 5):
+		if dot < 0 or (dot > 0 and _velocity.length() < 9):
 			reverse = true
 			angle_to = _velocity.angle_to(-get_up())
 		
@@ -206,7 +210,6 @@ func do_physics(gas, braking, left, right, joy, delta):
 	
 	var angle_to = _velocity.angle_to(dir)
 	_velocity = _velocity.rotated(angle_to)
-	
 	
 	# Apply the force
 	set_linear_velocity(_velocity)

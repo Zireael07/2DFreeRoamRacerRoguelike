@@ -38,11 +38,13 @@ func _draw():
 	#print(str(parent.motion))
 	draw_vector(parent.motion, Vector2(), colors['YELLOW'])
 	
+	#draw_vector(parent._velocity, Vector2(), colors['RED'])
+	
 #	draw_vector(parent.forward_vec, Vector2(), colors['WHITE'])
 	
-	if "angle" in parent:
-		# this takes degrees
-		draw_circle_arc_poly(Vector2(), 100, -90, -90-rad2deg(parent.angle), colors['RED'])
+#	if "angle" in parent:
+#		# this takes degrees
+#		draw_circle_arc_poly(Vector2(), 100, -90, -90-rad2deg(parent.angle), colors['RED'])
 
 
 func draw_vector(vector, offset, _color):
