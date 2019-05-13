@@ -38,7 +38,7 @@ func setup_navi(samples, edges, mult=1, poisson=false):
 	
 	if path_look.size() > 0:
 		# test (get path_look entry at id x)
-		var test = path_look[path_look.keys()[1]]
+		var test = path_look[path_look.keys()[3]]
 		#print("Test: " + str(test))
 		var nav_path = nav.get_point_path(test[0], test[1])
 	#	print("Nav path: " + str(nav_path))

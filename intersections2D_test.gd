@@ -11,8 +11,6 @@ func _ready():
 	for i in range(0, get_child_count()):
 		var pos = get_child(i).position
 		samples.append(pos)
-		
-	#samples = get_children()
 	
 	
 	var sorted = sort_intersections_distance()
@@ -22,13 +20,14 @@ func _ready():
 	# for test purposes
 	edges = [Vector2(0,1), Vector2(0,2), Vector2(0,3), Vector2(1,3), Vector2(2,3)]
 
-	auto_connect(initial_int)
+	auto_connect(initial_int)	
+	auto_connect(sorted[1][1])
 	
 	# manual		
 	#connect_intersections(1,3)
 	#connect_intersections(1,0)
-	connect_intersections(0,3)
-	connect_intersections(0,2)
+	#connect_intersections(0,3)
+	#connect_intersections(0,2)
 
 	connect_intersections(2,3)
 
@@ -80,39 +79,53 @@ func auto_connect(initial_int):
 	var next_ints = []
 	var res = []
 	var sorted_n = []
+	# to remove properly
+	var to_remove = []
+
 	for e in edges:
 		if e.x == initial_int:
 			print("Edge with initial int" + str(e) + " other end " + str(e.y))
 			var data = [e.y, get_child(e.y).get_position()]
 			next_ints.append(data)
 			#print(data[1].x)
-			sorted_n.append(data[1].x)
+			#TODO: use relative angles?? it has to be robust!
+			sorted_n.append(data[1].y)
+			#sorted_n.append(data[1].x)
+			# remove from edge list so that we can use the list in other iterations
+			to_remove.append(edges.find(e))
 		if e.y == initial_int:
 			print("Edge with initial int" + str(e) + " other end " + str(e.x))
 			var data = [e.x, get_child(e.x).get_position()]
 			next_ints.append(data)
 			#print(data[1].x)
-			sorted_n.append(data[1].x)
+			#sorted_n.append(data[1].x)
+			sorted_n.append(data[1].y)
+			# remove from edge list so that we can use the list in other iterations
+			to_remove.append(edges.find(e))
+
+	# remove ids to remove
+	for i in to_remove:
+		edges.remove(i)
 
 	#print(sorted_n)
 
-	# this sorts by natural order (lower x first)
+	# this sorts by natural order (lower value first)
 	sorted_n.sort()
 	# but we want higher?
-	sorted_n.invert()
+	#sorted_n.invert()
 	
-	print(sorted_n)
+	print("Sorted: " + str(sorted_n))
 	
 	for i in range(0, next_ints.size()):
 		#print("Attempt " + str(i))
 		for d in next_ints:
 			#print(str(d) + " " + str(sorted_n[0]))
-			if d[1].x == sorted_n[0]:
+			if d[1].y == sorted_n[0]:
 				next_ints.remove(next_ints.find(d))
 				res.append(d)
 				sorted_n.remove(0)
 		
-	#print("Res " + str(res) + " lower x: " + str(res[0]))
+	#print("Res " + str(res) + " lower y: " + str(res[0]))
 	#print("next ints: " + str(next_ints))
 	for i in range(0, res.size()):
 		var p = res[i]

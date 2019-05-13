@@ -81,14 +81,16 @@ func get_src_exit(src, dest):
 	var rel_pos = src.get_transform().xform_inv(dest.get_position())
 	print("Relative position: " + str(rel_pos) + " angle " + str(atan2(rel_pos.x, rel_pos.y)))
 	
+	# exits NEED to be listed CW (right, bottom, top)
+	
 	#quadrant 1 (we exclude top exit to avoid crossing over)
 	if rel_pos.x > 0 and rel_pos.y > 0:
-		if src_exits.has(src.point_one):
-			src_exits.remove(src_exits.find(src.point_one))
-			return src.point_one
 		if src_exits.has(src.point_two):
 			src_exits.remove(src_exits.find(src.point_two))
 			return src.point_two
+		if src_exits.has(src.point_one):
+			src_exits.remove(src_exits.find(src.point_one))
+			return src.point_one
 	# quadrant 2
 	# same
 	elif rel_pos.x < 0 and rel_pos.y > 0:
