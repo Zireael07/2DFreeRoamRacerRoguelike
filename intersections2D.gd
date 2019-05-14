@@ -45,7 +45,7 @@ func connect_intersections(one, two):
 			calculate_turn(one, two, data, corner_points[2], 1, top_node)
 		
 	
-			place_straight(corner_points[1], corner_points[3], top_node)
+		place_straight(corner_points[1], corner_points[3], top_node)
 
 func get_corner_points(one, two, loc_src_extended, loc_dest_extended, dist):
 	var corners = []
