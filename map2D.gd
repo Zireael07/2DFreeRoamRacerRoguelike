@@ -111,6 +111,10 @@ func _posto3d(pos):
 	return Vector3(pos.x, 0, pos.y)
 
 func setup_nav_astar(pts, i, begin_id, poisson=true):
+	# catch any errors
+	if i >= get_child_count():
+		print("No child at index : " + str(i))
+		return
 	#print(get_child(i).get_name())
 	
 	# extract intersection id's
