@@ -71,7 +71,7 @@ func _draw():
 func get_src_exit(src, dest):
 	var src_exits = src.open_exits
 	
-	if src_exits.size() < 0:
+	if src_exits.size() < 1:
 		print("Error, no exits left")
 		return
 	
@@ -79,44 +79,77 @@ func get_src_exit(src, dest):
 #	print("Positions: " + str(src.get_position()) + " " + str(dest.get_position()))	
 #	print("Transform:" + str(src.get_transform()))
 	var rel_pos = src.get_transform().xform_inv(dest.get_position())
-	print("Relative position: " + str(rel_pos) + " angle " + str(atan2(rel_pos.x, rel_pos.y)))
+	print("Src exits for relative pos: " + str(rel_pos) + " angle " + str(atan2(rel_pos.y, rel_pos.x)))
 	
-	# exits NEED to be listed CW (right, bottom, top)
+	# exits NEED to be listed CW (right = 2, bottom = 1 , top = 3) if we sort by y
+	# listed CCW if we sort by angle?
 	
 	#quadrant 1 (we exclude top exit to avoid crossing over)
 	if rel_pos.x > 0 and rel_pos.y > 0:
-		if src_exits.has(src.point_two):
-			src_exits.remove(src_exits.find(src.point_two))
-			return src.point_two
-		if src_exits.has(src.point_one):
-			src_exits.remove(src_exits.find(src.point_one))
-			return src.point_one
+		print("Quadrant 1... angle: " + str(atan2(rel_pos.y, rel_pos.x)))
+		if atan2(rel_pos.y, rel_pos.x) > 1:
+			if src_exits.has(src.point_one):
+				src_exits.remove(src_exits.find(src.point_one))
+				return src.point_one
+			elif src_exits.has(src.point_two):
+				src_exits.remove(src_exits.find(src.point_two))
+				return src.point_two
+			else: 
+				print("No exits found!")
+		else:
+			if src_exits.has(src.point_two):
+				src_exits.remove(src_exits.find(src.point_two))
+				return src.point_two
+			elif src_exits.has(src.point_one):
+				src_exits.remove(src_exits.find(src.point_one))
+				return src.point_one
+			else:
+				print("No exits found")
 	# quadrant 2
 	# same
 	elif rel_pos.x < 0 and rel_pos.y > 0:
-		if src_exits.has(src.point_one):
-			src_exits.remove(src_exits.find(src.point_one))
-			return src.point_one
-		elif src_exits.has(src.point_three):
-			src_exits.remove(src_exits.find(src.point_three))
-			return src.point_three
+		print("Quadrant 2")
+		# if angle is small, consider only bottom and right
+		if atan2(rel_pos.y, rel_pos.x) < 2:
+			if src_exits.has(src.point_one):
+				src_exits.remove(src_exits.find(src.point_one))
+				return src.point_one
+			elif src_exits.has(src.point_two):
+				src_exits.remove(src_exits.find(src.point_two))
+				return src.point_two
+			else:
+				print("No exits found")
+		else:
+			if src_exits.has(src.point_three):
+				src_exits.remove(src_exits.find(src.point_three))
+				return src.point_three
+			elif src_exits.has(src.point_one):
+				src_exits.remove(src_exits.find(src.point_one))
+				return src.point_one
+			else:
+				print("No exits found")
 	# quadrant 3 (exclude bottom exit)
 	elif rel_pos.x > 0 and rel_pos.y < 0:
+		print("Quadrant 3")
 		if src_exits.has(src.point_two):
 			src_exits.remove(src_exits.find(src.point_two))
 			return src.point_two
 		elif src_exits.has(src.point_three):
 			src_exits.remove(src_exits.find(src.point_three))
 			return src.point_three
+		else:
+			print("No exits found")
 	# quadrant 4
 	elif rel_pos.x < 0 and rel_pos.y < 0:
+		print("Quadrant 4")
 		if src_exits.has(src.point_three):
 			src_exits.remove(src_exits.find(src.point_three))
 			return src.point_three
-		if src_exits.has(src.point_one):
+		elif src_exits.has(src.point_one):
 			src_exits.remove(src_exits.find(src.point_one))
 			return src.point_one
-
+		else:
+			print("No exit found")
 	
 	# naive method, sometimes leads to crossing over the intersection itself
 #	var dists = []
@@ -189,7 +222,7 @@ func get_dest_exit(src, dest): #, dest_exits):
 	#print("Y abs: " + str(abs(dest.get_position().y - src.get_position().y)))
 	
 	
-	if dest_exits.size() < 0:
+	if dest_exits.size() < 1:
 		print("Error, no exits left")
 		return
 	
@@ -197,32 +230,48 @@ func get_dest_exit(src, dest): #, dest_exits):
 #	print("Positions: " + str(src.get_position()) + " " + str(dest.get_position()))	
 #	print("Transform:" + str(src.get_transform()))
 	var rel_pos = dest.get_transform().xform_inv(src.get_position())
-	print("Relative position: " + str(rel_pos) + " angle " + str(atan2(rel_pos.x, rel_pos.y)))
+	print("Dest exits for relative pos: " + str(rel_pos) + " angle " + str(atan2(rel_pos.y, rel_pos.x)))
 	
-	# quadrant 4, exclude bottom exit to avoid crossing over
+	# exits NEED to be listed CW (right = 2, bottom = 1, top = 3)
+	# listed CCW if we sort by angle?
+	
+	# quadrant 4, exclude right exit to avoid crossing over
 	if rel_pos.x < 0 and rel_pos.y < 0:
+		print("Dest quadrant 4... " + str(atan2(rel_pos.y, rel_pos.x)))
+		if atan2(rel_pos.y, rel_pos.x) > -2:
+			print("Case 1")
+			if dest_exits.has(dest.point_three):
+				dest_exits.remove(dest_exits.find(dest.point_three))
+				return dest.point_three
+			elif dest_exits.has(dest.point_two):
+				dest_exits.remove(dest_exits.find(dest.point_two))
+				return dest.point_two
+		else:
+			print("Case 2")
+			if dest_exits.has(dest.point_three):
+				dest_exits.remove(dest_exits.find(dest.point_three))
+				return dest.point_three
+			elif dest_exits.has(dest.point_one):
+				dest_exits.remove(dest_exits.find(dest.point_one))
+				return dest.point_one
+	# quadrant 3, same
+	elif rel_pos.x > 0 and rel_pos.y < 0:
+		print("Dest quadrant 3")
 		if dest_exits.has(dest.point_three):
 			dest_exits.remove(dest_exits.find(dest.point_three))
 			return dest.point_three
 		elif dest_exits.has(dest.point_two):
 			dest_exits.remove(dest_exits.find(dest.point_two))
 			return dest.point_two
-	# quadrant 3, same
-	elif rel_pos.x > 0 and rel_pos.y < 0:
+	# quadrant 2
+	elif rel_pos.x < 0 and rel_pos.y > 0:
+		print("Dest quadrant 2")
 		if dest_exits.has(dest.point_three):
 			dest_exits.remove(dest_exits.find(dest.point_three))
 			return dest.point_three
 		elif dest_exits.has(dest.point_one):
 			dest_exits.remove(dest_exits.find(dest.point_one))
 			return dest.point_one
-	# quadrant 2
-	elif rel_pos.x < 0 and rel_pos.y > 0:
-		if dest_exits.has(dest.point_two):
-			dest_exits.remove(dest_exits.find(dest.point_two))
-			return dest.point_two
-		elif dest_exits.has(dest.point_three):
-			dest_exits.remove(dest_exits.find(dest.point_three))
-			return dest.point_three
 	# quadrant 1, same
 	elif rel_pos.x > 0 and rel_pos.y > 0:
 		if dest_exits.has(dest.point_two):
