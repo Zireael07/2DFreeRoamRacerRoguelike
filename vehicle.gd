@@ -85,8 +85,10 @@ func do_physics(gas, braking, left, right, joy, delta):
 #	# Add drift to velocity
 #	_velocity = get_up_velocity() + (get_right_velocity() * _drift_factor)
 	
-	if joy != Vector2(0,0):
-		steer_target = joy.x
+	#if joy != Vector2(0,0):
+	# in real project, should check for joystick option on
+	if joy != Vector2(0,0) and abs(joy.x) > 0.1: # deadzone
+		steer_target = -joy.x #invert
 	else:
 		if (left):
 			steer_target = -STEER_LIMIT
@@ -94,6 +96,16 @@ func do_physics(gas, braking, left, right, joy, delta):
 			steer_target = STEER_LIMIT
 		else: #if (not left and not right):
 			steer_target = 0
+	
+	# use joy for gas/brake, too
+	if joy != Vector2(0,0) and abs(joy.y) > 0.4: # deadzone
+		if joy.y > 0:
+			gas = true
+		elif joy.y < 0:
+			braking = true
+		else:
+			gas = false
+			braking = false
 	
 #	# Steer Left
 #	if(left):

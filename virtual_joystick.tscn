@@ -38,6 +38,7 @@ texture = ExtResource( 1 )
 script = ExtResource( 2 )
 
 [node name="Joystick" type="TextureRect" parent="Control"]
+modulate = Color( 0, 1, 0, 1 )
 margin_left = 43.0
 margin_top = 43.0
 margin_right = 193.0
@@ -57,4 +58,3 @@ margin_right = -124.0
 margin_bottom = -40.0
 size_flags_horizontal = 2
 size_flags_vertical = 0
-

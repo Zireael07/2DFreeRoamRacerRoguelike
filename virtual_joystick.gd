@@ -123,5 +123,17 @@ func set_val(ev):
 	# offset from center
 	var offset = Vector2(ev.position.x-(joystick.get_size().x/2), ev.position.y-(joystick.get_size().y/2))
 	joystick.set_position(offset)
+	
+	# color the joy based on input
+	if abs(val.x) > 0.85:
+		joystick.set_modulate(Color(1,0,0,1))
+	elif abs(val.x) > 0.5:
+		joystick.set_modulate(Color(1,1,0,1))
+	elif abs(val.x) < 0.1: # deadzone, no tint
+		joystick.set_modulate(Color(0,0,0,1))
+	else:
+		joystick.set_modulate(Color(0,1,0,1))
+	
+	
 	# output steering value debug
 	valOut.set_text(str(val))

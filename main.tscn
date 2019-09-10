@@ -58,4 +58,3 @@ anchor_bottom = 1.0
 color = Color( 0.222656, 0.222656, 0.222656, 0.574588 )
 
 [node name="virtual_joy" parent="CanvasLayer" instance=ExtResource( 7 )]
-
