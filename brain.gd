@@ -167,5 +167,3 @@ class CopState:
 		# use real velocity to decide
 		# _velocity is rotated by parent's rotation, so we use the one that's rotated to fit
 		player.velocity = player.get_parent().motion
-		
-	
